@@ -1,7 +1,81 @@
 @extends('layouts.app')
 
 @section('title', 'Terms of Service — Rentersmaxx')
-@section('meta_description', 'The rules and responsibilities that govern your use of the Rentersmaxx platform.')
+@section('meta_description', 'Rentersmaxx terms of service. The rules and responsibilities that govern your use of the platform.')
+
+@push('styles')
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0D1F35; --navy-mid: #162d4a; --navy-border: rgba(255,255,255,0.08);
+  --cream: #FAF8F3; --cream-dark: #F0EDE4;
+  --terra: #C4622D; --terra-light: #d97448;
+  --text-dark: #0D1F35; --text-mid: #4A5A6A; --text-light: #8A99AA;
+  --white: #ffffff; --radius: 16px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; color: var(--text-dark); background: var(--cream); overflow-x: hidden; }
+h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; }
+.rm-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 72px; height: 80px; background: rgba(13,31,53,0.94); backdrop-filter: blur(20px); border-bottom: 1px solid var(--navy-border); }
+.rm-nav-logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: -0.5px; }
+.rm-nav-logo span { color: var(--terra-light); }
+.rm-nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0 auto; padding: 0 32px; }
+.rm-nav-links a { padding: 7px 14px; border-radius: 16px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.2s, background 0.2s; }
+.rm-nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+.rm-btn { display: inline-flex; align-items: center; padding: 9px 20px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer; transition: all 0.2s; border: none; }
+.rm-btn-ghost { background: transparent; color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.16); }
+.rm-btn-ghost:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+.rm-btn-primary { background: var(--terra); color: var(--white); }
+.rm-btn-primary:hover { background: var(--terra-light); }
+.rm-nav-cta { display: flex; gap: 10px; }
+.rm-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+.rm-hamburger span { display: block; width: 22px; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; transition: all 0.3s; }
+.rm-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.rm-hamburger.open span:nth-child(2) { opacity: 0; }
+.rm-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.rm-drawer { position: fixed; top: 80px; left: 0; right: 0; background: var(--navy); border-bottom: 1px solid var(--navy-border); padding: 22px 20px 24px; z-index: 999; transform: translateY(-110%); transition: transform 0.3s ease; }
+.rm-drawer.open { transform: translateY(0); }
+.rm-drawer a { display: block; padding: 12px 16px; border-radius: 13px; color: rgba(255,255,255,0.65); text-decoration: none; font-size: 15px; margin-bottom: 2px; }
+.rm-drawer a:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+.rm-drawer-cta { display: flex; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--navy-border); }
+.rm-drawer-cta .rm-btn { flex: 1; justify-content: center; }
+.legal-page { padding-top: 80px; }
+.legal-hero { background: var(--navy); padding: 96px 32px 60px; }
+.legal-hero-inner { max-width: 1000px; margin: 0 auto; }
+.legal-label { font-size: 23px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terra-light); margin-bottom: 26px; }
+.legal-hero h1 { font-size: clamp(44px, 5vw, 56px); color: var(--white); letter-spacing: -0.02em; margin-bottom: 26px; }
+.legal-meta { font-size: 23px; color: rgba(255,255,255,0.35); font-weight: 300; }
+.legal-meta span { color: rgba(255,255,255,0.55); }
+.legal-body { max-width: 1000px; margin: 0 auto; padding: 88px 32px 100px; }
+.legal-toc { background: var(--cream-dark); border-radius: var(--radius); padding: 48px 40px; margin-bottom: 64px; }
+.legal-toc h3 { font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 26px; }
+.legal-toc ol { list-style: none; display: flex; flex-direction: column; gap: 13px; counter-reset: toc; }
+.legal-toc ol li { display: flex; align-items: center; gap: 13px; }
+.legal-toc ol li::before { counter-increment: toc; content: counter(toc, decimal-leading-zero); font-size: 23px; color: var(--terra); font-weight: 600; flex-shrink: 0; width: 24px; }
+.legal-toc ol li a { font-size: 23px; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
+.legal-toc ol li a:hover { color: var(--terra); }
+.legal-section { margin-bottom: 56px; padding-bottom: 56px; border-bottom: 1px solid var(--cream-dark); }
+.legal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.legal-section h2 { font-size: 27px; color: var(--text-dark); margin-bottom: 26px; letter-spacing: -0.01em; }
+.legal-section p { font-size: 21px; color: var(--text-mid); line-height: 1.8; font-weight: 300; margin-bottom: 26px; }
+.legal-section p:last-child { margin-bottom: 0; }
+.legal-section ul, .legal-section ol { margin: 16px 0 16px 24px; display: flex; flex-direction: column; gap: 13px; }
+.legal-section li { font-size: 21px; color: var(--text-mid); line-height: 1.7; font-weight: 300; }
+.legal-section strong { color: var(--text-dark); font-weight: 600; }
+.legal-section a { color: var(--terra); text-decoration: none; }
+.legal-section a:hover { text-decoration: underline; }
+.legal-highlight { background: var(--cream-dark); border-radius: var(--radius); padding: 26px 24px; margin: 20px 0; border-left: 3px solid var(--terra); }
+.legal-highlight p { font-size: 23px; color: var(--text-dark); font-weight: 400; margin: 0; }
+.legal-footer-strip { background: var(--navy); padding: 52px 32px; }
+.legal-footer-strip-inner { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 26px; }
+.legal-footer-strip p { font-size: 19px; color: rgba(255,255,255,0.35); }
+.legal-footer-links { display: flex; gap: 13px; flex-wrap: wrap; }
+.legal-footer-links a { font-size: 19px; color: rgba(255,255,255,0.4); text-decoration: none; padding: 7px 14px; border-radius: 13px; transition: all 0.2s; }
+.legal-footer-links a:hover { color: var(--white); background: rgba(255,255,255,0.07); }
+.legal-footer-links a.active { color: var(--terra-light); }
+@media (max-width: 1000px) { .rm-nav { padding: 0 20px; } .rm-nav-links, .rm-nav-cta { display: none; } .rm-hamburger { display: flex; } }
+</style>
+@endpush
 
 @php
   $page = 'terms';
@@ -9,6 +83,7 @@
 @endphp
 
 @section('content')
+</div>
 
 <div class="legal-page">
   <div class="legal-hero">
@@ -171,4 +246,27 @@
     </div>
   </div>
 </div>
+
+<script>
+const nav    = document.getElementById('rmNav');
+const burger = document.getElementById('rmBurger');
+const drawer = document.getElementById('rmDrawer');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), {passive:true});
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+});
+</script>
 @endsection
+
+@push('scripts')
+<script>
+const nav    = document.getElementById('rmNav');
+const burger = document.getElementById('rmBurger');
+const drawer = document.getElementById('rmDrawer');
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+});
+</script>
+@endpush
