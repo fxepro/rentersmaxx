@@ -75,7 +75,8 @@
       @if($lease)
         <div class="prop-card-rent">{{ number_format($lease->rent_minor_units/100,0) }} <span style="font-size:15px;color:var(--text-light)">{{ $lease->currency_code }}</span></div>
         <div class="prop-card-meta">
-          <span>Due {{ $lease->due_day }}{{ match(true){$lease->due_day===1=>'st',$lease->due_day===2=>'nd',$lease->due_day===3=>'rd',default=>'th'} }}</span>
+          @php $day=$lease->due_day; $sfx=$day===1?'st':($day===2?'nd':($day===3?'rd':'th')); @endphp
+          <span>Due {{ $day }}{{ $sfx }}</span>
           <span>·</span>
           <span>{{ $lease->tenant->first_name ?? '—' }} {{ $lease->tenant->last_name ?? '' }}</span>
         </div>
