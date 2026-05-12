@@ -62,7 +62,7 @@
       $lease   = $p->leases->where('status','active')->first();
       $country = config('countries.'.$p->country_code, []);
       $flags   = ['FR'=>'🇫🇷','GB'=>'🇬🇧','US'=>'🇺🇸','IN'=>'🇮🇳','DE'=>'🇩🇪','AU'=>'🇦🇺','CA'=>'🇨🇦','NG'=>'🇳🇬','ID'=>'🇮🇩','PH'=>'🇵🇭','BR'=>'🇧🇷','MX'=>'🇲🇽','ZA'=>'🇿🇦','KE'=>'🇰🇪','SG'=>'🇸🇬','JP'=>'🇯🇵','ES'=>'🇪🇸','IT'=>'🇮🇹','NL'=>'🇳🇱','PT'=>'🇵🇹','BE'=>'🇧🇪','SE'=>'🇸🇪','NO'=>'🇳🇴','DK'=>'🇩🇰','PL'=>'🇵🇱','CH'=>'🇨🇭','MY'=>'🇲🇾','TH'=>'🇹🇭','VN'=>'🇻🇳'];
-      $flag    = $flags[$p->country_code] ?? '🏠';
+      $flag    = $flags[$p->country_code] ?? "🏠";
     @endphp
     <a href="{{ route('properties.show',$p) }}" class="prop-card">
       <div class="prop-card-top">
@@ -115,9 +115,9 @@
             @foreach($properties as $p)
             @php
               $lease   = $p->leases->where('status','active')->first();
-              $flags   = ['FR'=>'🇫🇷','GB'=>'🇬🇧','US'=>'🇺🇸','IN'=>'🇮🇳','DE'=>'🇩🇪','AU'=>'🇦🇺','CA'=>'🇨🇦','NG'=>'🇳🇬','ID'=>'🇮🇩','PH'=>'🇵🇭','BR'=>'🇧🇷','MX'=>'🇲🇽','ZA'=>'🇿🇦','KE'=>'🇰🇪','SG'=>'🇸🇬','JP'=>'🇯🇵','ES'=>'🇪🇸','IT'=>'🇮🇹','NL'=>'🇳🇱','PT'=>'🇵🇹','BE'=>'🇧🇪','SE'=>'🇸🇪','NO'=>'🇳🇴','DK'=>'🇩🇰','PL'=>'🇵🇱','CH'=>'🇨🇭','MY'=>'🇲🇾','TH'=>'🇹🇭','VN'=>'🇻🇳'];
-              $flag    = $flags[$p->country_code] ?? '🏠';
-              $country = config('countries.'.$p->country_code,[]);
+              $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","DE"=>"🇩🇪","AU"=>"🇦🇺","CA"=>"🇨🇦","NG"=>"🇳🇬","ID"=>"🇮🇩","PH"=>"🇵🇭","BR"=>"🇧🇷","MX"=>"🇲🇽","ZA"=>"🇿🇦","KE"=>"🇰🇪","SG"=>"🇸🇬","JP"=>"🇯🇵","ES"=>"🇪🇸","IT"=>"🇮🇹","NL"=>"🇳🇱","PT"=>"🇵🇹","BE"=>"🇧🇪","SE"=>"🇸🇪","NO"=>"🇳🇴","DK"=>"🇩🇰","PL"=>"🇵🇱","CH"=>"🇨🇭","MY"=>"🇲🇾","TH"=>"🇹🇭","VN"=>"🇻🇳"];
+              $flag    = $flags[$p->country_code] ?? "🏠";
+              $country = config("countries.".$p->country_code,[]);
             @endphp
             <tr>
               <td>
