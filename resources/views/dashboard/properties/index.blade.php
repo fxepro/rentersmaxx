@@ -118,7 +118,8 @@ $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","D
       <div class="prop-card-meta" style="color:var(--terra)">Create lease →</div>
     @endif
     <div class="prop-card-footer">
-      <span>{{ $country['method'] ?? '—' }}</span>
+      @php $method = $country['method'] ?? '—'; @endphp
+      <span>{{ $method }}</span>
       <span>{{ ucfirst($p->type) }}@if($p->bedrooms) · {{ $p->bedrooms }}bd@endif</span>
     </div>
   </button>
@@ -153,7 +154,8 @@ $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","D
             <td>{{ $p->country_code }}</td>
             <td>@if($lease)<strong>{{ $lease->tenant->first_name }} {{ $lease->tenant->last_name }}</strong>@else <span style="color:var(--text-light)">—</span>@endif</td>
             <td>@if($lease)<strong>{{ number_format($lease->rent_minor_units/100,0) }} {{ $lease->currency_code }}</strong>@else —@endif</td>
-            <td>{{ $country['method'] ?? '—' }}</td>
+            @php $tmethod = $country['method'] ?? '—'; @endphp
+            <td>{{ $tmethod }}</td>
             <td>@if($lease){{ $lease->due_day }}th@else —@endif</td>
             <td><span class="badge {{ $lease ? 'badge-green' : 'badge-grey' }}">{{ $lease ? 'Tenanted' : 'Vacant' }}</span></td>
           </tr>
