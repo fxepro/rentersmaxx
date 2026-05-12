@@ -375,25 +375,6 @@ function togglePassword() {
 }
 
 // ── LOGIN FORM ──
-function handleLogin(e) {
-  e.preventDefault();
-  const email    = document.getElementById('email');
-  const password = document.getElementById('password');
-  const emailErr = document.getElementById('emailError');
-  const pwErr    = document.getElementById('passwordError');
-  const loginErr = document.getElementById('loginError');
-  const btn      = document.getElementById('loginBtn');
-
-  // Reset errors
-  [email, password].forEach(el => el.classList.remove('error'));
-  [emailErr, pwErr, loginErr].forEach(el => el.style.display = 'none');
-
-  let valid = true;
-  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-    email.classList.add('error');
-    emailErr.style.display = 'block';
-    valid = false;
-  }
   if (!password.value) {
     password.classList.add('error');
     pwErr.style.display = 'block';
