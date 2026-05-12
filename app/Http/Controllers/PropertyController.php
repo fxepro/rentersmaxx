@@ -49,10 +49,9 @@ class PropertyController extends Controller
     public function show(Property $property)
     {
         $this->authorize('view', $property);
-        $property->load(['leases' => fn($q) => $q->with(['tenant','payments','mandates']), 'leases.payments']);
+        $property->load(['leases' => fn($q) => $q->with(['tenant','payments','mandates'])]);
         return view('dashboard.properties.show', compact('property'));
     }
-}
 
     public function update(Request $request, Property $property)
     {
@@ -76,3 +75,4 @@ class PropertyController extends Controller
         $property->delete();
         return redirect()->route('properties.index')->with('success', 'Property deleted.');
     }
+}
