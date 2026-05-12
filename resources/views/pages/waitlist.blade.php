@@ -9,6 +9,7 @@
 @endphp
 
 @section('content')
+
 <!-- ══ MAIN ══ -->
 <div class="waitlist-page">
 

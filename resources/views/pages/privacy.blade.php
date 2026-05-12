@@ -9,6 +9,7 @@
 @endphp
 
 @section('content')
+
 <div class="legal-page">
   <div class="legal-hero">
     <div class="legal-hero-inner">

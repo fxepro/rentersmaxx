@@ -9,6 +9,7 @@
 @endphp
 
 @section('content')
+
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>

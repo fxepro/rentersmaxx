@@ -9,7 +9,7 @@
 @endphp
 
 @section('content')
-<!-- ── LEFT ── -->
+
 <div class="login-left">
   <div class="login-left-grid"></div>
   <div class="login-left-glow"></div>

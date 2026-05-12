@@ -1,8 +1,4 @@
-/* ═══════════════════════════════════════════════════════
-   Rentersmaxx — Complete Stylesheet
-   All pages · All components · Merged and deduplicated
-   Generated: May 2025
-═══════════════════════════════════════════════════════ */
+/* Rentersmaxx — Complete Stylesheet — All pages merged */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1361,7 +1357,6 @@ input[type=range]::-moz-range-thumb {
 
 
 /* ── STORY ── */
-.story { background: var(--white); }
 .story-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: start; }
 .story-content h2 { font-size: clamp(44px, 3.5vw, 44px); color: var(--text-dark); margin-bottom: 40px; letter-spacing: -0.02em; }
 .story-content p { font-size: 19px; color: var(--text-mid); line-height: 1.85; font-weight: 300; margin-bottom: 30px; }
