@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\{
-    WaitlistController, PropertyController, LeaseController,
-    DashboardController, MaintenanceController, MessageController,
-    RepatriationController, WebhookController,
-};
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\WaitlistController;
+use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public marketing pages ──
@@ -20,21 +21,21 @@ Route::get('/terms',        fn() => view('pages.terms'))->name('terms');
 Route::get('/cookies',      fn() => view('pages.cookies'))->name('cookies');
 Route::get('/waitlist',     fn() => view('pages.waitlist'))->name('waitlist');
 Route::post('/waitlist',    [WaitlistController::class, 'store'])->name('waitlist.store');
-Route::get('/login',        fn() => view('pages.login'))->name('login');
 
-// ── Webhooks (no auth — signature-verified) ──
+// ── Auth ──
+Route::get('/login',        [LoginController::class, 'show'])->name('login')->middleware('guest');
+Route::post('/login',       [LoginController::class, 'login'])->name('auth.login')->middleware('guest');
+Route::post('/logout',      [LoginController::class, 'logout'])->name('auth.logout')->middleware('auth');
+Route::post('/register',    [RegisterController::class, 'store'])->name('auth.register')->middleware('guest');
+Route::get('/forgot-password',  [ForgotPasswordController::class, 'show'])->name('password.request')->middleware('guest');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->name('password.email')->middleware('guest');
+
+// ── Webhooks (no auth) ──
 Route::post('/webhooks/{processor}', [WebhookController::class, 'handle'])
     ->name('webhooks.handle')
     ->whereIn('processor', ['stripe','razorpay','flutterwave','xendit','mercadopago']);
 
-// ── Authenticated app routes ──
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('properties', PropertyController::class)->only(['index','create','store','show','edit','update','destroy']);
-    Route::post('/properties/{property}/leases',       [LeaseController::class, 'store'])->name('leases.store');
-    Route::get('/leases/{lease}',                      [LeaseController::class, 'show'])->name('leases.show');
-    Route::post('/leases/{lease}/maintenance',         [MaintenanceController::class, 'store'])->name('maintenance.store');
-    Route::patch('/maintenance/{maintenanceRequest}',  [MaintenanceController::class, 'update'])->name('maintenance.update');
-    Route::post('/leases/{lease}/messages',            [MessageController::class, 'store'])->name('messages.store');
-    Route::post('/properties/{property}/repatriation', [RepatriationController::class, 'store'])->name('repatriation.store');
+// ── Dashboard (auth required) ──
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard.index'))->name('dashboard');
 });

@@ -276,13 +276,14 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
       </div>
 
       <div class="sso-buttons">
-        <button class="sso-btn" onclick="ssoLogin('Google')">
+        <button class="sso-btn" onclick="event.preventDefault(); document.getElementById('sso-note').style.display='block'">
           <span class="sso-icon">🔵</span> Continue with Google
         </button>
-        <button class="sso-btn" onclick="ssoLogin('Apple')">
+        <button class="sso-btn" onclick="event.preventDefault(); document.getElementById('sso-note').style.display='block'">
           <span class="sso-icon">🍎</span> Continue with Apple
         </button>
       </div>
+      <p id="sso-note" style="display:none;font-size:13px;color:var(--text-light);text-align:center;margin-top:8px;">SSO available at launch. Use email for now.</p>
 
       <div class="divider">
         <div class="divider-line"></div>
@@ -290,11 +291,13 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
         <div class="divider-line"></div>
       </div>
 
-      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
+      <form class="login-form" id="loginForm" method="POST" action="{{ route('auth.login') }}">
+        @csrf
         <div class="form-group">
           <label for="email">Email address</label>
           <input type="email" class="form-input" id="email" placeholder="you@example.com" autocomplete="email" required>
           <span class="form-error" id="emailError">Please enter a valid email address.</span>
+          @error('email') <span class="form-error" style="display:block">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">
