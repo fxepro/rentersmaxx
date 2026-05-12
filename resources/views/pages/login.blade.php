@@ -295,7 +295,7 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
         @csrf
         <div class="form-group">
           <label for="email">Email address</label>
-          <input type="email" class="form-input" id="email" placeholder="you@example.com" autocomplete="email" required>
+          <input type="email" class="form-input" id="email" name="email" placeholder="you@example.com" autocomplete="email" value="{{ old('email') }}" required>
           <span class="form-error" id="emailError">Please enter a valid email address.</span>
           @error('email') <span class="form-error" style="display:block">{{ $message }}</span> @enderror
         </div>
@@ -306,7 +306,7 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
             <a href="#" onclick="showForgot(event)">Forgot password?</a>
           </label>
           <div class="password-wrap">
-            <input type="password" class="form-input" id="password" placeholder="Your password" autocomplete="current-password" required>
+            <input type="password" class="form-input" id="password" name="password" placeholder="Your password" autocomplete="current-password" required>
             <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password" id="pwToggle">👁</button>
           </div>
           <span class="form-error" id="passwordError">Please enter your password.</span>
