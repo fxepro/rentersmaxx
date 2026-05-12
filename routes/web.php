@@ -1,14 +1,10 @@
 <?php
-
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\WaitlistController;
-use App\Http\Controllers\WebhookController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\{LoginController, RegisterController, ForgotPasswordController};
+use App\Http\Controllers\{WaitlistController, WebhookController, DashboardController,
+    PropertyController, LeaseController, TenantController, PaymentController, MaintenanceController};
 use Illuminate\Support\Facades\Route;
 
-// ── Public marketing pages ──
+// ── Marketing ──
 Route::get('/',             fn() => view('pages.index'))->name('home');
 Route::get('/how-it-works', fn() => view('pages.how-it-works'))->name('how-it-works');
 Route::get('/features',     fn() => view('pages.features'))->name('features');
@@ -23,19 +19,31 @@ Route::get('/waitlist',     fn() => view('pages.waitlist'))->name('waitlist');
 Route::post('/waitlist',    [WaitlistController::class, 'store'])->name('waitlist.store');
 
 // ── Auth ──
-Route::get('/login',        [LoginController::class, 'show'])->name('login')->middleware('guest');
-Route::post('/login',       [LoginController::class, 'login'])->name('auth.login')->middleware('guest');
-Route::post('/logout',      [LoginController::class, 'logout'])->name('auth.logout')->middleware('auth');
-Route::post('/register',    [RegisterController::class, 'store'])->name('auth.register')->middleware('guest');
-Route::get('/forgot-password',  [ForgotPasswordController::class, 'show'])->name('password.request')->middleware('guest');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->name('password.email')->middleware('guest');
+Route::middleware('guest')->group(function () {
+    Route::get('/login',            [LoginController::class, 'show'])->name('login');
+    Route::post('/login',           [LoginController::class, 'login'])->name('auth.login');
+    Route::post('/register',        [RegisterController::class, 'store'])->name('auth.register');
+    Route::get('/forgot-password',  [ForgotPasswordController::class, 'show'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->name('password.email');
+});
+Route::post('/logout', [LoginController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
-// ── Webhooks (no auth) ──
+// ── Webhooks ──
 Route::post('/webhooks/{processor}', [WebhookController::class, 'handle'])
     ->name('webhooks.handle')
     ->whereIn('processor', ['stripe','razorpay','flutterwave','xendit','mercadopago']);
 
-// ── Dashboard (auth required) ──
-Route::middleware(['auth'])->group(function () {
+// ── Dashboard ──
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn() => view('dashboard.index'))->name('dashboard');
+
+    Route::resource('properties', PropertyController::class)->only(['index','create','store','show']);
+    Route::get('/properties/{property}/leases/create', [LeaseController::class, 'create'])->name('leases.create');
+    Route::post('/properties/{property}/leases',       [LeaseController::class, 'store'])->name('leases.store');
+    Route::get('/leases',          [LeaseController::class,       'index'])->name('leases.index');
+    Route::get('/leases/{lease}',  [LeaseController::class,       'show'])->name('leases.show');
+    Route::get('/tenants',         [TenantController::class,      'index'])->name('tenants.index');
+    Route::get('/payments',        [PaymentController::class,     'index'])->name('payments.index');
+    Route::get('/maintenance',     [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::patch('/maintenance/{maintenanceRequest}', [MaintenanceController::class, 'update'])->name('maintenance.update');
 });

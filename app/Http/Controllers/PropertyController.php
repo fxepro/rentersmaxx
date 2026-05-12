@@ -1,61 +1,55 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Jobs\ProcessWebhookJob;
-use App\Models\{Lease, Payment, Property, WaitlistEmail, MaintenanceRequest, Message};
+use App\Models\Property;
 use App\Payment\ProcessorFactory;
-use App\Services\{PaymentService, LedgerService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
-// ─────────────────────────────────────────────────────────────
-// PROPERTY CONTROLLER
-// ─────────────────────────────────────────────────────────────
 class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Auth::user()
-            ->properties()
-            ->withCount(['leases' => fn($q) => $q->where('status', 'active')])
-            ->latest()
-            ->get();
-
+        $properties = Auth::user()->properties()
+            ->with(['leases' => fn($q) => $q->where('status','active')->with('tenant')])
+            ->latest()->get();
         return view('dashboard.properties.index', compact('properties'));
+    }
+
+    public function create()
+    {
+        return view('dashboard.properties.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'address_line1'  => 'required|string|max:255',
-            'address_line2'  => 'nullable|string|max:255',
-            'city'           => 'required|string|max:100',
-            'state_province' => 'nullable|string|max:100',
-            'postal_code'    => 'nullable|string|max:20',
-            'country_code'   => ['required', 'string', 'size:2',
-                                  fn($a, $v, $f) => ProcessorFactory::supports($v) ?: $f('Country not supported')],
-            'type'           => 'required|in:apartment,house,commercial,other',
-            'bedrooms'       => 'nullable|integer|min:0|max:99',
+            'name'          => 'required|string|max:255',
+            'country_code'  => 'required|string|size:2',
+            'address_line1' => 'required|string|max:255',
+            'city'          => 'required|string|max:100',
+            'type'          => 'required|in:apartment,house,commercial,other',
+            'bedrooms'      => 'nullable|integer|min:0|max:99',
+            'postal_code'   => 'nullable|string|max:20',
         ]);
 
-        $countryConfig = config("countries.{$validated['country_code']}");
+        if (!ProcessorFactory::supports($validated['country_code'])) {
+            return back()->withErrors(['country_code' => 'Country not supported yet.'])->withInput();
+        }
 
-        $property = Auth::user()->properties()->create(array_merge($validated, [
-            'currency_code'  => $countryConfig['currency'],
-            'processor_slug' => $countryConfig['processor'],
+        $country = config('countries.'.$validated['country_code']);
+
+        Auth::user()->properties()->create(array_merge($validated, [
+            'currency_code'  => $country['currency'],
+            'processor_slug' => $country['processor'],
         ]));
 
-        return redirect()->route('properties.show', $property)
-            ->with('success', 'Property added.');
+        return redirect()->route('properties.index')->with('success', 'Property added.');
     }
 
     public function show(Property $property)
     {
         $this->authorize('view', $property);
-        $property->load(['leases.tenant', 'leases.payments' => fn($q) => $q->latest()->limit(5)]);
+        $property->load(['leases' => fn($q) => $q->with(['tenant','payments','mandates']), 'leases.payments']);
         return view('dashboard.properties.show', compact('property'));
     }
 }
