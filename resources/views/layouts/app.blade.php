@@ -13,7 +13,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 {{-- Shared styles --}}
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@if(app()->environment('local') && !file_exists(public_path('build/manifest.json')))
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@else
+    @vite(['resources/css/app.css'])
+@endif
 
 {{-- Page-specific styles --}}
 @stack('styles')
@@ -32,7 +36,11 @@
 @endunless
 
 {{-- Shared JS --}}
-<script src="{{ asset('js/app.js') }}"></script>
+@if(app()->environment('local') && !file_exists(public_path('build/manifest.json')))
+    <script src="{{ asset('js/app.js') }}"></script>
+@else
+    @vite(['resources/js/app.js'])
+@endif
 
 {{-- Page-specific scripts --}}
 @stack('scripts')
