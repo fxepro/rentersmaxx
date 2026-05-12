@@ -21,7 +21,9 @@ class Property extends Model
     ];
 
     public function landlord()   { return $this->belongsTo(User::class, 'landlord_id'); }
-    public function leases()     { return $this->hasMany(Lease::class); }
+    public function leases()          { return $this->hasMany(Lease::class); }
+    public function applications()    { return $this->hasMany(\App\Models\Application::class); }
+    public function backgroundChecks(){ return $this->hasMany(\App\Models\BackgroundCheck::class); }
     public function documents()  { return $this->morphMany(Document::class, 'documentable'); }
 
     public function activeLeases()

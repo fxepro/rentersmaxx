@@ -10,7 +10,7 @@ class PropertyController extends Controller
     public function index()
     {
         $properties = Auth::user()->properties()
-            ->with(['leases' => fn($q) => $q->where('status','active')->with('tenant')])
+            ->with(['leases' => fn($q) => $q->where('status','active')->with('tenant'), 'applications' => fn($q) => $q->with('backgroundChecks')->orderByDesc('created_at')])
             ->latest()->get();
         return view('dashboard.properties.index', compact('properties'));
     }

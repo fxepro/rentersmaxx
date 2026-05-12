@@ -57,6 +57,7 @@
 .panel-tabs { display:flex;border-bottom:1px solid var(--cream-dark);padding:0 28px;flex-shrink:0; }
 .panel-tab { padding:12px 0;margin-right:24px;font-size:14px;font-weight:500;color:var(--text-light);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s; }
 .panel-tab.active { color:var(--terra);border-bottom-color:var(--terra); }
+.panel-tab-badge { display:inline-block;background:var(--terra);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:100px;margin-left:4px;vertical-align:middle; }
 
 .panel-body { flex:1;overflow-y:auto;padding:28px; }
 .panel-section { margin-bottom:28px; }
@@ -177,6 +178,8 @@ $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","D
   </div>
   <div class="panel-tabs" id="panelTabs">
     <div class="panel-tab active" onclick="showTab('details')">Details</div>
+    <div class="panel-tab" onclick="showTab('applications')">Applications <span class="panel-tab-badge" id="appBadge"></span></div>
+    <div class="panel-tab" onclick="showTab('background')">Background</div>
     <div class="panel-tab" onclick="showTab('lease')">Lease</div>
     <div class="panel-tab" onclick="showTab('payments')">Payments</div>
     <div class="panel-tab" onclick="showTab('edit')">Edit</div>
@@ -227,6 +230,33 @@ const PROPS = {
 
 const COUNTRIES = @json(array_map(fn($k,$v)=>['code'=>$k,'label'=>$k.' — '.$v['currency']], array_keys(config('countries')), config('countries')));
 
+const APPS = {
+  @foreach($properties as $p)
+  "{{ $p->id }}": [
+    @foreach($p->applications->sortByDesc('created_at') as $app)
+    {
+      id:      "{{ $app->id }}",
+      name:    @json($app->first_name.' '.$app->last_name),
+      email:   @json($app->email),
+      phone:   @json($app->phone ?? ''),
+      moveIn:  "{{ $app->move_in_date?->format('d M Y') ?? '—' }}",
+      income:  "{{ $app->monthly_income_minor_units ? number_format($app->monthly_income_minor_units/100,0).' '.($app->income_currency??'') : '—' }}",
+      message: @json($app->message ?? ''),
+      status:  "{{ $app->status }}",
+      notes:   @json($app->landlord_notes ?? ''),
+      checks:  [
+        @foreach($app->backgroundChecks as $chk)
+        { id:"{{ $chk->id }}", type:"{{ $chk->type }}", method:"{{ $chk->method }}", status:"{{ $chk->status }}", notes:@json($chk->notes??''), completed:"{{ $chk->completed_at?->format('d M Y')??'—' }}" },
+        @endforeach
+      ],
+      statusUrl: "{{ route('applications.status', $app) }}",
+      checkUrl:  "{{ route('background-checks.store', $app) }}",
+    },
+    @endforeach
+  ],
+  @endforeach
+};
+
 let activeTab = 'details';
 let activeId  = null;
 
@@ -245,6 +275,10 @@ function openPanel(id) {
     const p = PROPS[id];
     document.getElementById('panelTitle').innerHTML = p.flag + ' ' + p.name;
     tabs.style.display = 'flex';
+    const appCount = (APPS[id] || []).length;
+    const badge = document.getElementById('appBadge');
+    badge.textContent = appCount > 0 ? appCount : '';
+    badge.style.display = appCount > 0 ? 'inline-block' : 'none';
     showTab('details');
   }
   document.addEventListener('keydown', escHandler);
@@ -262,14 +296,16 @@ function escHandler(e) { if (e.key === 'Escape') closePanel(); }
 function showTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel-tab')[['details','lease','payments','edit'].indexOf(tab)]?.classList.add('active');
+  document.querySelectorAll('.panel-tab')[['details','applications','background','lease','payments','edit'].indexOf(tab)]?.classList.add('active');
   const p = PROPS[activeId];
   if (!p) return;
 
-  if (tab === 'details')  renderDetails(p);
-  if (tab === 'lease')    renderLease(p);
-  if (tab === 'payments') renderPayments(p);
-  if (tab === 'edit')     renderEdit(p);
+  if (tab === 'details')      renderDetails(p);
+  if (tab === 'applications') renderApplications(p);
+  if (tab === 'background')   renderBackground(p);
+  if (tab === 'lease')        renderLease(p);
+  if (tab === 'payments')     renderPayments(p);
+  if (tab === 'edit')         renderEdit(p);
 }
 
 function renderDetails(p) {
@@ -291,6 +327,185 @@ function renderDetails(p) {
   document.getElementById('panelFooter').innerHTML = `
     <button onclick="showTab('edit')" class="db-btn db-btn-ghost">Edit property</button>
     <button onclick="showTab('lease')" class="db-btn db-btn-primary">View lease →</button>`;
+}
+
+function renderApplications(p) {
+  const apps = APPS[p.id] || [];
+  const statusColors = { pending:'gold', reviewing:'navy', approved:'green', rejected:'red' };
+  const statusLabels = { pending:'Pending', reviewing:'Reviewing', approved:'Approved', rejected:'Rejected' };
+
+  let html = `<div class="panel-section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="panel-section-title" style="margin:0">Tenant applications</div>
+      <button onclick="showAddAppForm('${p.id}')" class="db-btn db-btn-primary" style="font-size:12px;padding:6px 12px">+ Add applicant</button>
+    </div>`;
+
+  if (apps.length === 0) {
+    html += `<div style="text-align:center;padding:40px 0;color:var(--text-light)">
+      <div style="font-size:32px;margin-bottom:10px">📋</div>
+      <div style="font-size:14px">No applications yet. Add one manually or share a link.</div>
+    </div>`;
+  } else {
+    apps.forEach(app => {
+      html += `<div style="border:1px solid var(--cream-dark);border-radius:10px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-dark)">${escHtml(app.name)}</div>
+            <div style="font-size:12px;color:var(--text-light)">${escHtml(app.email)}${app.phone?' · '+escHtml(app.phone):''}</div>
+          </div>
+          <span class="badge badge-${statusColors[app.status]}">${statusLabels[app.status]}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:13px;margin-bottom:12px">
+          <div><span style="color:var(--text-light)">Move-in: </span>${app.moveIn}</div>
+          <div><span style="color:var(--text-light)">Income: </span>${app.income}</div>
+        </div>
+        ${app.message ? `<div style="font-size:13px;color:var(--text-mid);background:var(--cream);border-radius:8px;padding:10px;margin-bottom:12px">"${escHtml(app.message)}"</div>` : ''}
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${['reviewing','approved','rejected'].map(s =>
+            s !== app.status ? `<button onclick="updateAppStatus('${app.statusUrl}','${s}',this)" class="db-btn db-btn-ghost" style="font-size:12px;padding:5px 10px">${{reviewing:'Mark reviewing',approved:'Approve',rejected:'Reject'}[s]}</button>` : ''
+          ).join('')}
+          <button onclick="showTab('background');activeAppId='${app.id}'" class="db-btn db-btn-ghost" style="font-size:12px;padding:5px 10px">Background check →</button>
+        </div>
+      </div>`;
+    });
+  }
+
+  html += `</div>
+  <div id="addAppForm" style="display:none;border-top:1px solid var(--cream-dark);padding-top:20px;margin-top:8px">
+    <div class="panel-section-title">New applicant</div>
+    <div class="panel-form" id="appFormInner">
+      <div class="panel-form-row">
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">First name</label><input type="text" id="appFirst" class="db-input" placeholder="First name"></div>
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Last name</label><input type="text" id="appLast" class="db-input" placeholder="Last name"></div>
+      </div>
+      <div class="panel-form-row">
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Email</label><input type="email" id="appEmail" class="db-input" placeholder="email@example.com"></div>
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Phone</label><input type="text" id="appPhone" class="db-input" placeholder="Optional"></div>
+      </div>
+      <div class="panel-form-row">
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Move-in date</label><input type="date" id="appMoveIn" class="db-input"></div>
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Monthly income (${p.currency})</label><input type="number" id="appIncome" class="db-input" placeholder="e.g. 5000"></div>
+      </div>
+      <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Message / notes</label><textarea id="appMessage" class="db-textarea" placeholder="Any notes about this applicant…"></textarea></div>
+      <div style="display:flex;gap:8px">
+        <button onclick="document.getElementById('addAppForm').style.display='none'" class="db-btn db-btn-ghost">Cancel</button>
+        <button onclick="submitApp('${p.id}')" class="db-btn db-btn-primary">Save applicant</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('panelFooter').innerHTML = '';
+}
+
+function showAddAppForm(pid) {
+  const f = document.getElementById('addAppForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+async function submitApp(pid) {
+  const data = new FormData();
+  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('first_name', document.getElementById('appFirst').value);
+  data.append('last_name',  document.getElementById('appLast').value);
+  data.append('email',      document.getElementById('appEmail').value);
+  data.append('phone',      document.getElementById('appPhone').value);
+  data.append('move_in_date', document.getElementById('appMoveIn').value);
+  const income = document.getElementById('appIncome').value;
+  if (income) { data.append('monthly_income_minor_units', parseInt(income)*100); data.append('income_currency', PROPS[pid].currency); }
+  data.append('message', document.getElementById('appMessage').value);
+  const res = await fetch(`/properties/${pid}/applications`, { method:'POST', body:data });
+  if (res.ok) location.reload();
+}
+
+async function updateAppStatus(url, status, btn) {
+  const data = new FormData();
+  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('_method', 'PATCH');
+  data.append('status', status);
+  const res = await fetch(url, { method:'POST', body:data });
+  if (res.ok) location.reload();
+}
+
+let activeAppId = null;
+
+function renderBackground(p) {
+  const apps = APPS[p.id] || [];
+  const allChecks = apps.flatMap(app => app.checks.map(c => ({...c, appName: app.name, appId: app.id, checkUrl: app.checkUrl})));
+  const statusColors = { requested:'grey', pending:'gold', passed:'green', failed:'red', manual_review:'navy' };
+  const typeLabels = { credit:'Credit', criminal:'Criminal', eviction:'Eviction history', right_to_rent:'Right to Rent', employment:'Employment', references:'References', document_upload:'Document upload' };
+
+  let html = `<div class="panel-section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="panel-section-title" style="margin:0">Background checks</div>
+    </div>`;
+
+  if (allChecks.length === 0) {
+    html += `<div style="text-align:center;padding:32px 0;color:var(--text-light)">
+      <div style="font-size:32px;margin-bottom:10px">🔍</div>
+      <div style="font-size:14px;margin-bottom:6px">No background checks yet.</div>
+      <div style="font-size:12px">Request a check from an applicant on the Applications tab.</div>
+    </div>`;
+  } else {
+    allChecks.forEach(chk => {
+      html += `<div style="border:1px solid var(--cream-dark);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:var(--text-dark)">${typeLabels[chk.type] || chk.type}</div>
+          <div style="font-size:12px;color:var(--text-light)">${escHtml(chk.appName)} · ${chk.method}</div>
+          ${chk.notes ? `<div style="font-size:12px;color:var(--text-mid);margin-top:4px">${escHtml(chk.notes)}</div>` : ''}
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <span class="badge badge-${statusColors[chk.status]}">${chk.status.replace('_',' ')}</span>
+          <div style="font-size:11px;color:var(--text-light);margin-top:4px">${chk.completed}</div>
+        </div>
+      </div>`;
+    });
+  }
+
+  // Request new check — show if there are applicants
+  if (apps.length > 0) {
+    const country = p.country;
+    const westernCountries = ['US','CA','GB','AU','NZ','IE','DE','FR','NL','SE','NO','DK','BE','AT','CH'];
+    const isWestern = westernCountries.includes(country);
+    const methods = isWestern
+      ? [{v:'checkr',l:'Checkr (US)'},{v:'experian',l:'Experian'},{v:'transunion',l:'TransUnion'},{v:'document_upload',l:'Document upload'}]
+      : [{v:'document_upload',l:'Document upload'}];
+    const types = isWestern
+      ? ['credit','criminal','eviction','right_to_rent','employment','references']
+      : ['employment','references','document_upload'];
+
+    html += `<div style="border-top:1px solid var(--cream-dark);padding-top:20px;margin-top:8px">
+      <div class="panel-section-title">Request new check</div>
+      <div class="panel-form" style="gap:12px">
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Applicant</label>
+          <select id="chkApp" class="db-select">${apps.map(a=>`<option value="${a.id}" data-url="${a.checkUrl}">${escHtml(a.name)}</option>`).join('')}</select></div>
+        <div class="panel-form-row">
+          <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Check type</label>
+            <select id="chkType" class="db-select">${types.map(t=>`<option value="${t}">${typeLabels[t]||t}</option>`).join('')}</select></div>
+          <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Method</label>
+            <select id="chkMethod" class="db-select">${methods.map(m=>`<option value="${m.v}">${m.l}</option>`).join('')}</select></div>
+        </div>
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Notes</label><input type="text" id="chkNotes" class="db-input" placeholder="Optional"></div>
+        <div><button onclick="submitCheck()" class="db-btn db-btn-primary">Request check</button></div>
+      </div>
+    </div>`;
+  }
+
+  html += '</div>';
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('panelFooter').innerHTML = '';
+}
+
+async function submitCheck() {
+  const sel = document.getElementById('chkApp');
+  const url = sel.options[sel.selectedIndex].dataset.url;
+  const data = new FormData();
+  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('type',   document.getElementById('chkType').value);
+  data.append('method', document.getElementById('chkMethod').value);
+  data.append('notes',  document.getElementById('chkNotes').value);
+  const res = await fetch(url, { method:'POST', body:data });
+  if (res.ok) location.reload();
 }
 
 function renderLease(p) {

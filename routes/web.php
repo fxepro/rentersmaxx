@@ -1,6 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\{LoginController, RegisterController, ForgotPasswordController};
-use App\Http\Controllers\{WaitlistController, WebhookController, DashboardController,
+use App\Http\Controllers\{WaitlistController, WebhookController, DashboardController, ApplicationController,
     PropertyController, LeaseController, TenantController, PaymentController, MaintenanceController};
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments',        [PaymentController::class,     'index'])->name('payments.index');
     Route::get('/maintenance',     [MaintenanceController::class, 'index'])->name('maintenance.index');
     Route::patch('/maintenance/{maintenanceRequest}', [MaintenanceController::class, 'update'])->name('maintenance.update');
+    // Applications & Background Checks
+    Route::post('/properties/{property}/applications',          [ApplicationController::class, 'store'])->name('applications.store');
+    Route::patch('/applications/{application}/status',          [ApplicationController::class, 'updateStatus'])->name('applications.status');
+    Route::post('/applications/{application}/background-checks',[ApplicationController::class, 'requestCheck'])->name('background-checks.store');
+    Route::patch('/background-checks/{check}',                  [ApplicationController::class, 'updateCheck'])->name('background-checks.update');
+
 });
