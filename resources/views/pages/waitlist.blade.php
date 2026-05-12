@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Join the Waitlist — Rentersmaxx')
-@section('meta_description', 'Be first when Rentersmaxx launches in your country. Join the waitlist for the international landlord platform that collects rent locally in any currency.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the Waitlist — Rentersmaxx</title>
+<meta name="description" content="Be first when Rentersmaxx launches in your country. Join the waitlist for the international landlord platform that collects rent locally in any currency.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -245,15 +249,11 @@ h1,h2,h3,h4 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1
   .rm-footer-brand { grid-column: 1 / -1; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'waitlist';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'waitlist'])
 
 <!-- ══ MAIN ══ -->
 <div class="waitlist-page">
@@ -432,8 +432,8 @@ h1,h2,h3,h4 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1
 </div>
 
 <!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -477,35 +477,5 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── WAITLIST FORM ──
-function submitWaitlist(e) {
-  e.preventDefault();
-  const btn   = document.getElementById('wlSubmit');
-  btn.textContent = 'Submitting…';
-  btn.disabled = true;
-
-  // Simulate API call
-  setTimeout(() => {
-    const email  = document.getElementById('wlEmail').value;
-    const ref    = 'RMX-' + Math.random().toString(36).substr(2,6).toUpperCase();
-    document.getElementById('wlRef').textContent = ref;
-    document.getElementById('wlFormWrap').style.display = 'none';
-    const success = document.getElementById('wlSuccess');
-    success.style.display = 'flex';
-    // Scroll to top of right panel
-    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 800);
-}
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.08 }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-@endpush
+</body>
+</html>

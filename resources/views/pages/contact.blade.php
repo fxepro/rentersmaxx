@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Contact — Rentersmaxx')
-@section('meta_description', 'Get in touch with the Rentersmaxx team. General enquiries, sales, press, and support — we respond to every message.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Rentersmaxx</title>
+<meta name="description" content="Get in touch with the Rentersmaxx team. General enquiries, sales, press, and support — we respond to every message.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -193,15 +197,11 @@ h1,h2,h3,h4 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1
   .rm-footer-brand { grid-column: 1 / -1; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'contact';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'contact'])
 
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
@@ -447,8 +447,8 @@ h1,h2,h3,h4 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1
 </div>
 
 <!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -508,51 +508,5 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── CONTACT TYPE TABS (top) ──
-const headings = {
-  general: { h: 'Got a question?<br>Let\'s talk.', p: 'Whether you\'re a landlord with properties in three countries, a property manager exploring agency pricing, or a journalist covering proptech — we want to hear from you.' },
-  sales:   { h: 'Let\'s talk<br><em>agency pricing.</em>', p: 'Managing properties on behalf of multiple owners? We have a plan built for you. Tell us about your portfolio and we\'ll get back within one business day.' },
-  press:   { h: 'Working on<br><em>a story?</em>', p: 'We\'re building something that hasn\'t existed before. Happy to brief journalists, provide data, and make the founding team available for interviews.' },
-  support: { h: 'Something<br><em>not working?</em>', p: 'We prioritise support tickets by severity — payment issues are treated as urgent. Tell us exactly what happened and we\'ll resolve it fast.' },
-};
-
-function switchType(type, btn) {
-  document.querySelectorAll('.ct-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('contactHeading').innerHTML = headings[type].h;
-  document.getElementById('contactLead').textContent = headings[type].p;
-  switchFormTab(type);
-}
-
-// ── FORM TABS ──
-function switchFormTab(type) {
-  ['general','sales','press','support'].forEach(t => {
-    document.getElementById('form-' + t).style.display = t === type ? 'block' : 'none';
-    document.getElementById('tab-' + t).classList.toggle('active', t === type);
-  });
-}
-
-// ── FORM SUBMIT ──
-function submitContact(e, type) {
-  e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
-  setTimeout(() => {
-    e.target.style.display = 'none';
-    document.getElementById('success-' + type).style.display = 'block';
-  }, 700);
-}
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.08 }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-@endpush
+</body>
+</html>

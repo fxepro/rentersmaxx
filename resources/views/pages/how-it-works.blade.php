@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'How it works — Rentersmaxx')
-@section('meta_description', 'See exactly how Rentersmaxx collects rent locally in any country and consolidates it into your dashboard. Three steps, zero border complexity.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How it works — Rentersmaxx</title>
+<meta name="description" content="See exactly how Rentersmaxx collects rent locally in any country and consolidates it into your dashboard. Three steps, zero border complexity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -312,15 +316,11 @@ section { padding: 120px 32px; }
   .rm-footer-brand { grid-column: 1 / -1; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'how-it-works';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'how-it-works'])
 
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
@@ -690,9 +690,8 @@ section { padding: 120px 32px; }
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -738,28 +737,5 @@ function rmWaitlist(e) {
   document.getElementById('rmEmail').value = '';
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── OVERVIEW ACTIVE STATE ON SCROLL ──
-const sections = ['step-1','step-2','step-3'];
-const cards    = document.querySelectorAll('.overview-card');
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── WAITLIST ──
-function rmWaitlist(e) {
-  e.preventDefault();
-  const email = document.getElementById('rmEmail').value;
-  const note  = document.getElementById('rmWaitlistNote');
-  note.textContent = `✓ You're on the list — we'll reach out to ${email} soon.`;
-  note.style.color = 'rgba(255,255,255,0.88)';
-  document.getElementById('rmEmail').value = '';
-}
-</script>
-@endpush
+</body>
+</html>

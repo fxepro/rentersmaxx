@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Sign in — Rentersmaxx')
-@section('meta_description', 'Sign in to your Rentersmaxx account to manage your properties, collect rent, and view your dashboard.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — Rentersmaxx</title>
+<meta name="description" content="Sign in to your Rentersmaxx account to manage your properties, collect rent, and view your dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -201,14 +205,9 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
   .login-right { padding: 60px 32px; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'login';
-  $hideFooter = true;
-@endphp
-
-@section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
 <!-- ── LEFT ── -->
 <div class="login-left">
   <div class="login-left-grid"></div>
@@ -357,7 +356,7 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; line-height: 1.1; }
 
   </div>
 </div>
-
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── PASSWORD TOGGLE ──
 function togglePassword() {
@@ -446,95 +445,5 @@ function handleReset(e) {
   }, 800);
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── PASSWORD TOGGLE ──
-function togglePassword() {
-  const input  = document.getElementById('password');
-  const toggle = document.getElementById('pwToggle');
-  if (input.type === 'password') {
-    input.type  = 'text';
-    toggle.textContent = '🙈';
-  } else {
-    input.type  = 'password';
-    toggle.textContent = '👁';
-  }
-}
-
-// ── LOGIN FORM ──
-function handleLogin(e) {
-  e.preventDefault();
-  const email    = document.getElementById('email');
-  const password = document.getElementById('password');
-  const emailErr = document.getElementById('emailError');
-  const pwErr    = document.getElementById('passwordError');
-  const loginErr = document.getElementById('loginError');
-  const btn      = document.getElementById('loginBtn');
-
-  // Reset errors
-  [email, password].forEach(el => el.classList.remove('error'));
-  [emailErr, pwErr, loginErr].forEach(el => el.style.display = 'none');
-
-  let valid = true;
-  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-    email.classList.add('error');
-    emailErr.style.display = 'block';
-    valid = false;
-  }
-  if (!password.value) {
-    password.classList.add('error');
-    pwErr.style.display = 'block';
-    valid = false;
-  }
-  if (!valid) return;
-
-  btn.textContent = 'Signing in…';
-  btn.disabled = true;
-
-  // Simulate auth — replace with real API call
-  setTimeout(() => {
-    // Demo: show error for any credentials (replace with real auth)
-    loginErr.textContent = 'We couldn\'t find an account with those details. Check your email or join the waitlist.';
-    loginErr.style.display = 'block';
-    btn.textContent = 'Sign in →';
-    btn.disabled = false;
-  }, 1000);
-}
-
-// ── SSO ──
-function ssoLogin(provider) {
-  // Replace with real OAuth flow
-  alert(`${provider} sign-in coming soon. Join the waitlist to be notified at launch.`);
-}
-
-// ── FORGOT PASSWORD ──
-function showForgot(e) {
-  e.preventDefault();
-  document.getElementById('signinView').style.display = 'none';
-  document.getElementById('forgotView').style.display = 'block';
-  document.getElementById('resetSentView').style.display = 'none';
-}
-
-function showSignin() {
-  document.getElementById('signinView').style.display = 'block';
-  document.getElementById('forgotView').style.display = 'none';
-  document.getElementById('resetSentView').style.display = 'none';
-}
-
-function handleReset(e) {
-  e.preventDefault();
-  const email = document.getElementById('resetEmail').value;
-  const btn   = document.getElementById('resetBtn');
-  if (!email) return;
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('resetEmailSent').textContent = email;
-    document.getElementById('forgotView').style.display   = 'none';
-    document.getElementById('resetSentView').style.display = 'block';
-  }, 800);
-}
-</script>
-@endpush
+</body>
+</html>

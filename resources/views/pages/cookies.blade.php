@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Cookie Policy — Rentersmaxx')
-@section('meta_description', 'Rentersmaxx cookie policy. What cookies we use, why, and how to manage your preferences.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Policy — Rentersmaxx</title>
+<meta name="description" content="Rentersmaxx cookie policy. What cookies we use, why, and how to manage your preferences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -96,15 +100,10 @@ input:disabled + .toggle-slider { opacity: 0.5; cursor: not-allowed; }
 @media (max-width: 1000px) { .rm-nav { padding: 0 20px; } .rm-nav-links, .rm-nav-cta { display: none; } .rm-hamburger { display: flex; } }
 @media (max-width: 600px) { .cookie-table { font-size: 21px; } .cookie-table th, .cookie-table td { padding: 10px 12px; } }
 </style>
-@endpush
-
-@php
-  $page = 'cookies';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+@include('partials.nav', ['page' => 'cookies'])
 
 <div class="legal-page">
   <div class="legal-hero">
@@ -233,18 +232,8 @@ input:disabled + .toggle-slider { opacity: 0.5; cursor: not-allowed; }
   </div>
 </div>
 
-<div class="legal-footer-strip">
-  <div class="legal-footer-strip-inner">
-    <p>© Rentersmaxx 2025</p>
-    <div class="legal-footer-links">
-      <a href="{{ url('/privacy') }}">Privacy</a>
-      <a href="{{ url('/terms') }}">Terms</a>
-      <a href="{{ url('/cookies') }}" class="active">Cookies</a>
-      <a href="{{ url('/') }}">← Back to home</a>
-    </div>
-  </div>
-</div>
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 const nav    = document.getElementById('rmNav');
 const burger = document.getElementById('rmBurger');
@@ -261,22 +250,5 @@ function savePrefs() {
   setTimeout(() => { saved.style.display = 'none'; }, 3000);
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-const nav    = document.getElementById('rmNav');
-const burger = document.getElementById('rmBurger');
-const drawer = document.getElementById('rmDrawer');
-burger.addEventListener('click', () => {
-  const open = drawer.classList.toggle('open');
-  burger.classList.toggle('open', open);
-});
-
-function savePrefs() {
-  const saved = document.getElementById('savedMsg');
-  saved.style.display = 'block';
-  setTimeout(() => { saved.style.display = 'none'; }, 3000);
-}
-</script>
-@endpush
+</body>
+</html>

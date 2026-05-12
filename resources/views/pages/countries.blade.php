@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Supported Countries — Rentersmaxx')
-@section('meta_description', 'Rentersmaxx supports rent collection in 60+ countries across 7 regions. Local payment methods — SEPA, UPI, BACS, ACH and more.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supported Countries — Rentersmaxx</title>
+<meta name="description" content="Rentersmaxx supports rent collection in 60+ countries across 7 regions. Local payment methods — SEPA, UPI, BACS, ACH and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -194,15 +198,11 @@ section { padding: 120px 32px; }
   .stat-strip-inner { grid-template-columns: 1fr; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'countries';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'countries'])
 
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
@@ -581,9 +581,8 @@ section { padding: 120px 32px; }
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -679,87 +678,5 @@ function rmWaitlist(e) {
   document.getElementById('rmEmail').value = '';
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── REGION FILTER ──
-function filterRegion(region) {
-  document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('countrySearch').value = '';
-
-  const blocks = document.querySelectorAll('.region-block');
-  blocks.forEach(block => {
-    if (region === 'all' || block.dataset.region === region) {
-      block.style.display = 'block';
-    } else {
-      block.style.display = 'none';
-    }
-  });
-  document.getElementById('noResults').style.display = 'none';
-}
-
-// ── COUNTRY SEARCH ──
-function searchCountries(query) {
-  const q = query.toLowerCase().trim();
-
-  // Reset region filter buttons
-  document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.region-btn').classList.add('active');
-
-  if (!q) {
-    document.querySelectorAll('.region-block').forEach(b => b.style.display = 'block');
-    document.querySelectorAll('.country-card').forEach(c => c.style.display = 'block');
-    document.getElementById('noResults').style.display = 'none';
-    return;
-  }
-
-  let anyVisible = false;
-  document.querySelectorAll('.region-block').forEach(block => {
-    let blockHasMatch = false;
-    block.querySelectorAll('.country-card').forEach(card => {
-      const name = card.dataset.name || '';
-      const match = name.includes(q);
-      card.style.display = match ? 'block' : 'none';
-      if (match) { blockHasMatch = true; anyVisible = true; }
-    });
-    block.style.display = blockHasMatch ? 'block' : 'none';
-  });
-
-  const noRes = document.getElementById('noResults');
-  const term  = document.getElementById('searchTerm');
-  noRes.style.display = anyVisible ? 'none' : 'block';
-  if (term) term.textContent = query;
-}
-
-// ── REQUEST FORM ──
-function submitRequest(e) {
-  e.preventDefault();
-  const btn  = document.getElementById('requestBtn');
-  const note = document.getElementById('requestNote');
-  btn.textContent  = '✓ Request received';
-  btn.style.background = 'var(--green)';
-  btn.disabled = true;
-  note.textContent = 'We\'ll review your request and be in touch within 48 hours.';
-  note.style.color = 'var(--green)';
-}
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── WAITLIST ──
-function rmWaitlist(e) {
-  e.preventDefault();
-  const email = document.getElementById('rmEmail').value;
-  const note  = document.getElementById('rmWaitlistNote');
-  note.textContent = `✓ You're on the list — we'll reach out to ${email} soon.`;
-  note.style.color = 'rgba(255,255,255,0.88)';
-  document.getElementById('rmEmail').value = '';
-}
-</script>
-@endpush
+</body>
+</html>

@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Features — Rentersmaxx')
-@section('meta_description', 'Every capability for international landlords and their tenants. 12 landlord processes, 9 tenant features — built for properties in any country.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features — Rentersmaxx</title>
+<meta name="description" content="Every capability for international landlords and their tenants. 12 landlord processes, 9 tenant features — built for properties in any country.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -287,15 +291,11 @@ section { padding: 120px 32px; }
   .toggle-inner { flex-direction: column; align-items: flex-start; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'features';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'features'])
 
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
@@ -707,9 +707,8 @@ section { padding: 120px 32px; }
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -768,50 +767,5 @@ function rmWaitlist(e) {
   document.getElementById('rmEmail').value = '';
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── LANDLORD / TENANT TOGGLE ──
-function switchView(view) {
-  const landlord = document.getElementById('landlordSection');
-  const tenant   = document.getElementById('tenantSection');
-  const tabL     = document.getElementById('tabLandlord');
-  const tabT     = document.getElementById('tabTenant');
-  const count    = document.getElementById('featCount');
-
-  if (view === 'landlord') {
-    landlord.style.display = 'block';
-    tenant.style.display   = 'block';
-    tabL.classList.add('active');
-    tabT.classList.remove('active');
-    count.textContent = '12';
-    landlord.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    landlord.style.display = 'none';
-    tenant.style.display   = 'block';
-    tabL.classList.remove('active');
-    tabT.classList.add('active');
-    count.textContent = '9';
-    tenant.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── WAITLIST ──
-function rmWaitlist(e) {
-  e.preventDefault();
-  const email = document.getElementById('rmEmail').value;
-  const note  = document.getElementById('rmWaitlistNote');
-  note.textContent = `✓ You're on the list — we'll reach out to ${email} soon.`;
-  note.style.color = 'rgba(255,255,255,0.88)';
-  document.getElementById('rmEmail').value = '';
-}
-</script>
-@endpush
+</body>
+</html>

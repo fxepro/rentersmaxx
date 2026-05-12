@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Terms of Service — Rentersmaxx')
-@section('meta_description', 'Rentersmaxx terms of service. The rules and responsibilities that govern your use of the platform.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Rentersmaxx</title>
+<meta name="description" content="Rentersmaxx terms of service. The rules and responsibilities that govern your use of the platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -75,15 +79,10 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; }
 .legal-footer-links a.active { color: var(--terra-light); }
 @media (max-width: 1000px) { .rm-nav { padding: 0 20px; } .rm-nav-links, .rm-nav-cta { display: none; } .rm-hamburger { display: flex; } }
 </style>
-@endpush
-
-@php
-  $page = 'terms';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+@include('partials.nav', ['page' => 'terms'])
 
 <div class="legal-page">
   <div class="legal-hero">
@@ -235,18 +234,8 @@ h1,h2,h3 { font-family: 'Fraunces', serif; font-weight: 500; }
   </div>
 </div>
 
-<div class="legal-footer-strip">
-  <div class="legal-footer-strip-inner">
-    <p>© Rentersmaxx 2025</p>
-    <div class="legal-footer-links">
-      <a href="{{ url('/privacy') }}">Privacy</a>
-      <a href="{{ url('/terms') }}" class="active">Terms</a>
-      <a href="{{ url('/cookies') }}">Cookies</a>
-      <a href="{{ url('/') }}">← Back to home</a>
-    </div>
-  </div>
-</div>
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 const nav    = document.getElementById('rmNav');
 const burger = document.getElementById('rmBurger');
@@ -257,16 +246,5 @@ burger.addEventListener('click', () => {
   burger.classList.toggle('open', open);
 });
 </script>
-@endsection
-
-@push('scripts')
-<script>
-const nav    = document.getElementById('rmNav');
-const burger = document.getElementById('rmBurger');
-const drawer = document.getElementById('rmDrawer');
-burger.addEventListener('click', () => {
-  const open = drawer.classList.toggle('open');
-  burger.classList.toggle('open', open);
-});
-</script>
-@endpush
+</body>
+</html>

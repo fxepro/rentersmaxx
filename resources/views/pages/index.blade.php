@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Rentersmaxx — Collect rent anywhere. Get paid everywhere.')
-@section('meta_description', 'One app to manage rental properties across any country. Collect rent locally in EUR, INR, GBP and more. See everything in your currency.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentersmaxx — Collect rent anywhere. Get paid everywhere.</title>
+<meta name="description" content="One app to manage rental properties across any country. Collect rent locally in EUR, INR, GBP and more. See everything in your currency.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -428,14 +432,40 @@ section { padding: 120px 32px; }
   .feature-tabs { flex-direction: row; flex-wrap: wrap; position: static; }
 }
 </style>
-@endpush
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+<nav class="rm-nav" id="rmNav">
+  <a href="{{ url('/') }}" class="rm-nav-logo">Renters<span>maxx</span></a>
+  <ul class="rm-nav-links">
+    <li><a href="{{ url('/how-it-works') }}" id="nav-how">How it works</a></li>
+    <li><a href="{{ url('/features') }}" id="nav-features">Features</a></li>
+    <li><a href="{{ url('/pricing') }}" id="nav-pricing">Pricing</a></li>
+    <li><a href="{{ url('/countries') }}" id="nav-countries">Countries</a></li>
+  </ul>
+  <div class="rm-nav-cta">
+    <a href="{{ url('/login') }}" class="rm-btn rm-btn-ghost">Sign in</a>
+    <a href="{{ url('/waitlist') }}" class="rm-btn rm-btn-primary">Join waitlist →</a>
+  </div>
+  <button class="rm-hamburger" id="rmBurger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-@php
-  $page = 'home';
-  $hideFooter = false;
-@endphp
+<!-- Mobile drawer -->
+<div class="rm-drawer" id="rmDrawer">
+  <a href="{{ url('/how-it-works') }}">How it works</a>
+  <a href="{{ url('/features') }}">Features</a>
+  <a href="{{ url('/pricing') }}">Pricing</a>
+  <a href="{{ url('/countries') }}">Countries</a>
+  <div class="rm-drawer-cta">
+    <a href="{{ url('/login') }}" class="rm-btn rm-btn-ghost">Sign in</a>
+    <a href="{{ url('/waitlist') }}" class="rm-btn rm-btn-primary">Join waitlist →</a>
+  </div>
+</div>
 
-@section('content')
+<!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
@@ -668,10 +698,29 @@ section { padding: 120px 32px; }
     </div>
   </div>
 </section>
-@endsection
 
-@push('scripts')
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
+// ── NAV ──
+const nav    = document.getElementById('rmNav');
+const burger = document.getElementById('rmBurger');
+const drawer = document.getElementById('rmDrawer');
+
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), {passive:true});
+
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+});
+
+// Active nav link — match current filename
+const page = location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.rm-nav-links a, .rm-drawer a').forEach(a => {
+  if (a.getAttribute('href') === page) a.classList.add('active');
+});
+
 // ── FEATURE TABS ──
 document.querySelectorAll('.feature-tab').forEach((tab, i) => {
   tab.addEventListener('click', () => {
@@ -700,9 +749,14 @@ const observer = new IntersectionObserver(
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // ── WAITLIST ──
-soon.`;
+function rmWaitlist(e) {
+  e.preventDefault();
+  const email = document.getElementById('rmEmail').value;
+  const note  = document.getElementById('rmWaitlistNote');
+  note.textContent = `✓ You're on the list — we'll reach out to ${email} soon.`;
   note.style.color = 'rgba(255,255,255,0.88)';
   document.getElementById('rmEmail').value = '';
 }
 </script>
-@endpush
+</body>
+</html>

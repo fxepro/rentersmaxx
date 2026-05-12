@@ -1,9 +1,13 @@
-@extends('layouts.app')
-
-@section('title', 'Pricing — Rentersmaxx')
-@section('meta_description', 'Simple, transparent pricing for international landlords. First month free. $9 per unit per month after that. No setup fees, no contracts.')
-
-@push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Rentersmaxx</title>
+<meta name="description" content="Simple, transparent pricing for international landlords. First month free. $9 per unit per month after that. No setup fees, no contracts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -298,15 +302,11 @@ input[type=range]::-moz-range-thumb {
   .rm-footer-brand { grid-column: 1 / -1; }
 }
 </style>
-@endpush
-
-@php
-  $page = 'pricing';
-  $hideFooter = false;
-@endphp
-
-@section('content')
-</div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+<!-- ══ NAV ══ -->
+@include('partials.nav', ['page' => 'pricing'])
 
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
@@ -703,9 +703,8 @@ input[type=range]::-moz-range-thumb {
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-
-
+@include('partials.footer')
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
 // ── NAV ──
 const nav    = document.getElementById('rmNav');
@@ -798,84 +797,5 @@ function rmWaitlist(e) {
   document.getElementById('rmEmail').value = '';
 }
 </script>
-@endsection
-
-@push('scripts')
-<script>
-// ── CALCULATOR ──
-const propSlider = document.getElementById('propSlider');
-const rentSlider = document.getElementById('rentSlider');
-const propCount  = document.getElementById('propCount');
-const rentVal    = document.getElementById('rentVal');
-const calcMonthly    = document.getElementById('calcMonthly');
-const calcPeriodLabel = document.getElementById('calcPeriodLabel');
-const calcPaidLabel  = document.getElementById('calcPaidLabel');
-const calcPaidVal    = document.getElementById('calcPaidVal');
-const calcAnnual     = document.getElementById('calcAnnual');
-const calcRent       = document.getElementById('calcRent');
-const calcPct        = document.getElementById('calcPct');
-
-function fmt(n) { return '$' + n.toLocaleString(); }
-
-function updateCalc() {
-  const props = parseInt(propSlider.value);
-  const rent  = parseInt(rentSlider.value);
-  propCount.textContent = props;
-  rentVal.textContent   = fmt(rent);
-
-  const paidUnits   = Math.max(0, props - 1);
-  const monthly     = paidUnits * 9;
-  const annual      = monthly * 12;
-  const totalRent   = props * rent;
-  const pct         = totalRent > 0 ? ((monthly / totalRent) * 100).toFixed(1) : '0.0';
-
-  calcMonthly.textContent     = fmt(monthly);
-  calcPeriodLabel.textContent = `per month · ${props} propert${props === 1 ? 'y' : 'ies'}`;
-  calcAnnual.textContent      = fmt(annual) + ' / yr';
-  calcRent.textContent        = fmt(totalRent) + ' / mo';
-  calcPct.textContent         = pct + '%';
-
-  if (paidUnits === 0) {
-    calcPaidLabel.textContent = 'Additional properties';
-    calcPaidVal.textContent   = '$0 / mo';
-  } else if (paidUnits === 1) {
-    calcPaidLabel.textContent = 'Property 2 (1 unit)';
-    calcPaidVal.textContent   = '$9 / mo';
-  } else {
-    calcPaidLabel.textContent = `Properties 2–${props} (${paidUnits} units)`;
-    calcPaidVal.textContent   = fmt(monthly) + ' / mo';
-  }
-}
-
-propSlider.addEventListener('input', updateCalc);
-rentSlider.addEventListener('input', updateCalc);
-updateCalc();
-
-// ── FAQ ──
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item   = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
-  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── WAITLIST ──
-function rmWaitlist(e) {
-  e.preventDefault();
-  const email = document.getElementById('rmEmail').value;
-  const note  = document.getElementById('rmWaitlistNote');
-  note.textContent = `✓ You're on the list — we'll reach out to ${email} soon.`;
-  note.style.color = 'rgba(255,255,255,0.88)';
-  document.getElementById('rmEmail').value = '';
-}
-</script>
-@endpush
+</body>
+</html>
