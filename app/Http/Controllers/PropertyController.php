@@ -53,3 +53,26 @@ class PropertyController extends Controller
         return view('dashboard.properties.show', compact('property'));
     }
 }
+
+    public function update(Request $request, Property $property)
+    {
+        $this->authorize('update', $property);
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'country_code'  => 'required|string|size:2',
+            'address_line1' => 'required|string|max:255',
+            'city'          => 'required|string|max:100',
+            'type'          => 'required|in:apartment,house,commercial,other',
+            'bedrooms'      => 'nullable|integer|min:0|max:99',
+            'postal_code'   => 'nullable|string|max:20',
+        ]);
+        $property->update($validated);
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy(Property $property)
+    {
+        $this->authorize('update', $property);
+        $property->delete();
+        return redirect()->route('properties.index')->with('success', 'Property deleted.');
+    }

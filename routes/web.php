@@ -37,7 +37,7 @@ Route::post('/webhooks/{processor}', [WebhookController::class, 'handle'])
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn() => view('dashboard.index'))->name('dashboard');
 
-    Route::resource('properties', PropertyController::class)->only(['index','create','store','show']);
+    Route::resource('properties', PropertyController::class)->only(['index','create','store','show','update','destroy']);
     Route::get('/properties/{property}/leases/create', [LeaseController::class, 'create'])->name('leases.create');
     Route::post('/properties/{property}/leases',       [LeaseController::class, 'store'])->name('leases.store');
     Route::get('/leases',          [LeaseController::class,       'index'])->name('leases.index');
