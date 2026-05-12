@@ -96,7 +96,7 @@ return new class extends Migration {
             $table->foreignUuid('payment_id')->constrained()->cascadeOnDelete();
             $table->string('event_type', 100);               // payment.success | payment.failed | webhook.received etc.
             $table->string('idempotency_key')->unique();     // prevents duplicate webhook processing
-            $table->jsonb('processor_payload');              // full raw webhook/API response
+            $table->json('processor_payload');               // full raw webhook/API response
             $table->timestamp('occurred_at');
             $table->timestamps();
 

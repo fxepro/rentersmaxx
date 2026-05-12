@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Features — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Every capability for international landlords and their tenants. 12 landlord processes, 9 tenant features.'); ?>
 
-@section('title', 'Features — Rentersmaxx')
-@section('meta_description', 'Every capability for international landlords and their tenants. 12 landlord processes, 9 tenant features.')
-
-@php
+<?php
   $page = 'features';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -17,8 +15,8 @@
   <h1>Built for the landlord<br><em>nobody else serves.</em></h1>
   <p>12 landlord capabilities and 9 tenant features — all designed for properties in any country, collected in any currency, managed in one place.</p>
   <div class="page-hero-ctas">
-    <a href="{{ url('/waitlist') }}" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
-    <a href="{{ url('/pricing') }}" class="btn-outline-light">See pricing</a>
+    <a href="<?php echo e(url('/waitlist')); ?>" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
+    <a href="<?php echo e(url('/pricing')); ?>" class="btn-outline-light">See pricing</a>
   </div>
 </div>
 
@@ -420,9 +418,9 @@
 </section>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── LANDLORD / TENANT TOGGLE ──
@@ -457,4 +455,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/features.blade.php ENDPATH**/ ?>

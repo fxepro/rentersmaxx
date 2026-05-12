@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Pricing — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Simple transparent pricing. First month free. $9 per unit per month after that. No setup fees, no contracts.'); ?>
 
-@section('title', 'Pricing — Rentersmaxx')
-@section('meta_description', 'Simple transparent pricing. First month free. $9 per unit per month after that. No setup fees, no contracts.')
-
-@php
+<?php
   $page = 'pricing';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -43,7 +41,7 @@
           <li><span class="pf-dash">–</span>Portfolio analytics</li>
           <li><span class="pf-dash">–</span>Priority support</li>
         </ul>
-        <a href="{{ url('/waitlist') }}" class="price-cta price-cta-outline">Start free — first month on us</a>
+        <a href="<?php echo e(url('/waitlist')); ?>" class="price-cta price-cta-outline">Start free — first month on us</a>
       </div>
 
       <!-- Per unit — featured -->
@@ -67,7 +65,7 @@
           <li><span class="pf-check">✓</span>Priority email support</li>
           <li><span class="pf-check">✓</span>First month free — no card needed</li>
         </ul>
-        <a href="{{ url('/waitlist') }}" class="price-cta price-cta-primary">Start free trial</a>
+        <a href="<?php echo e(url('/waitlist')); ?>" class="price-cta price-cta-primary">Start free trial</a>
       </div>
 
       <!-- Agency -->
@@ -89,7 +87,7 @@
           <li><span class="pf-check">✓</span>API access</li>
           <li><span class="pf-check">✓</span>Custom contract</li>
         </ul>
-        <a href="{{ url('/contact') }}" class="price-cta price-cta-outline">Contact sales</a>
+        <a href="<?php echo e(url('/contact')); ?>" class="price-cta price-cta-outline">Contact sales</a>
       </div>
 
     </div>
@@ -176,7 +174,7 @@
 
         <p class="calc-note">Local payment fees (typically 0.36–2.5% per transaction) are separate and depend on your country and payment method. These are always shown before each collection.</p>
 
-        <a href="{{ url('/waitlist') }}" class="calc-cta">Get started free →</a>
+        <a href="<?php echo e(url('/waitlist')); ?>" class="calc-cta">Get started free →</a>
       </div>
     </div>
   </div>
@@ -405,9 +403,9 @@
 </section>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── CALCULATOR ──
@@ -476,4 +474,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/pricing.blade.php ENDPATH**/ ?>

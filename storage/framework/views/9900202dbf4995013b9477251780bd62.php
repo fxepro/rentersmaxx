@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Terms of Service — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'The rules and responsibilities that govern your use of the Rentersmaxx platform.'); ?>
 
-@section('title', 'Terms of Service — Rentersmaxx')
-@section('meta_description', 'The rules and responsibilities that govern your use of the Rentersmaxx platform.')
-
-@php
+<?php
   $page = 'terms';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="legal-page">
   <div class="legal-hero">
     <div class="legal-hero-inner">
@@ -21,7 +19,7 @@
   <div class="legal-body">
 
     <div class="legal-highlight">
-      <p>By creating an account or using the Rentersmaxx platform, you agree to these terms. Please read them carefully. If you have questions, <a href="{{ url('/contact') }}">contact us</a> before proceeding.</p>
+      <p>By creating an account or using the Rentersmaxx platform, you agree to these terms. Please read them carefully. If you have questions, <a href="<?php echo e(url('/contact')); ?>">contact us</a> before proceeding.</p>
     </div>
 
     <nav class="legal-toc">
@@ -96,7 +94,7 @@
 
     <div class="legal-section" id="payments">
       <h2>6. Payments and fees</h2>
-      <p><strong>Platform fees:</strong> The first month of your first property is free. After that, platform fees are charged per unit per month as set out on our <a href="{{ url('/pricing') }}">pricing page</a>. Fees are billed monthly and are non-refundable except where required by law.</p>
+      <p><strong>Platform fees:</strong> The first month of your first property is free. After that, platform fees are charged per unit per month as set out on our <a href="<?php echo e(url('/pricing')); ?>">pricing page</a>. Fees are billed monthly and are non-refundable except where required by law.</p>
       <p><strong>Payment processing fees:</strong> Local payment processing fees are charged by the applicable Payment Provider and passed through to the Landlord at cost. These fees are displayed before each collection and may vary by country and payment method.</p>
       <p><strong>Failed payments:</strong> If a rent payment fails, we will retry once after 3 days. We do not guarantee collection and are not liable for failed or disputed payments between Landlords and Tenants.</p>
       <p><strong>Refunds:</strong> We do not process refunds of rent payments. Any disputes about rent amounts between Landlords and Tenants are resolved directly between those parties.</p>
@@ -105,7 +103,7 @@
     <div class="legal-section" id="data-ownership">
       <h2>7. Data ownership</h2>
       <p>You retain ownership of all data you upload to the Platform, including lease documents, photos, and messages. By uploading data, you grant us a limited licence to store, process, and display it for the purpose of delivering the Platform's features.</p>
-      <p>You may export your data at any time. Upon account deletion, we will provide a data export within 30 days. Certain data may be retained beyond this period to comply with legal obligations (see our <a href="{{ url('/privacy') }}">Privacy Policy</a>).</p>
+      <p>You may export your data at any time. Upon account deletion, we will provide a data export within 30 days. Certain data may be retained beyond this period to comply with legal obligations (see our <a href="<?php echo e(url('/privacy')); ?>">Privacy Policy</a>).</p>
     </div>
 
     <div class="legal-section" id="liability">
@@ -163,11 +161,13 @@
   <div class="legal-footer-strip-inner">
     <p>© Rentersmaxx 2025</p>
     <div class="legal-footer-links">
-      <a href="{{ url('/privacy') }}">Privacy</a>
-      <a href="{{ url('/terms') }}" class="active">Terms</a>
-      <a href="{{ url('/cookies') }}">Cookies</a>
-      <a href="{{ url('/') }}">← Back to home</a>
+      <a href="<?php echo e(url('/privacy')); ?>">Privacy</a>
+      <a href="<?php echo e(url('/terms')); ?>" class="active">Terms</a>
+      <a href="<?php echo e(url('/cookies')); ?>">Cookies</a>
+      <a href="<?php echo e(url('/')); ?>">← Back to home</a>
     </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/terms.blade.php ENDPATH**/ ?>

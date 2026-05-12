@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Privacy Policy — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'How Rentersmaxx collects, uses, and protects your personal data across all markets.'); ?>
 
-@section('title', 'Privacy Policy — Rentersmaxx')
-@section('meta_description', 'How Rentersmaxx collects, uses, and protects your personal data across all markets.')
-
-@php
+<?php
   $page = 'privacy';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="legal-page">
   <div class="legal-hero">
     <div class="legal-hero-inner">
@@ -21,7 +19,7 @@
   <div class="legal-body">
 
     <div class="legal-highlight">
-      <p>This policy explains how Rentersmaxx collects, uses, stores, and protects personal data. It applies to landlords, tenants, and visitors to our platform across all supported markets. We are committed to plain-language privacy — if something is unclear, <a href="{{ url('/contact') }}">contact us</a>.</p>
+      <p>This policy explains how Rentersmaxx collects, uses, stores, and protects personal data. It applies to landlords, tenants, and visitors to our platform across all supported markets. We are committed to plain-language privacy — if something is unclear, <a href="<?php echo e(url('/contact')); ?>">contact us</a>.</p>
     </div>
 
     <nav class="legal-toc">
@@ -143,7 +141,7 @@
         <li><strong>Analytics cookies:</strong> Help us understand how users interact with the platform so we can improve it. We use privacy-respecting analytics tools.</li>
         <li><strong>Preference cookies:</strong> Remember your settings such as language and region</li>
       </ul>
-      <p>We do not use advertising or tracking cookies. You can manage your cookie preferences at any time via our <a href="{{ url('/cookies') }}">Cookie Policy</a> page.</p>
+      <p>We do not use advertising or tracking cookies. You can manage your cookie preferences at any time via our <a href="<?php echo e(url('/cookies')); ?>">Cookie Policy</a> page.</p>
     </div>
 
     <div class="legal-section" id="international">
@@ -172,7 +170,7 @@
       <p>For privacy-related questions, requests, or complaints:</p>
       <ul>
         <li>Email: <a href="mailto:privacy@rentersmaxx.com">privacy@rentersmaxx.com</a></li>
-        <li>General contact: <a href="{{ url('/contact') }}">rentersmaxx.com/contact</a></li>
+        <li>General contact: <a href="<?php echo e(url('/contact')); ?>">rentersmaxx.com/contact</a></li>
       </ul>
       <p>We aim to respond to all privacy enquiries within 5 business days.</p>
     </div>
@@ -184,12 +182,14 @@
   <div class="legal-footer-strip-inner">
     <p>© Rentersmaxx 2025</p>
     <div class="legal-footer-links">
-      <a href="{{ url('/privacy') }}" class="active">Privacy</a>
-      <a href="{{ url('/terms') }}">Terms</a>
-      <a href="{{ url('/cookies') }}">Cookies</a>
-      <a href="{{ url('/') }}">← Back to home</a>
+      <a href="<?php echo e(url('/privacy')); ?>" class="active">Privacy</a>
+      <a href="<?php echo e(url('/terms')); ?>">Terms</a>
+      <a href="<?php echo e(url('/cookies')); ?>">Cookies</a>
+      <a href="<?php echo e(url('/')); ?>">← Back to home</a>
     </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/privacy.blade.php ENDPATH**/ ?>

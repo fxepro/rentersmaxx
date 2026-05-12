@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'About — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Rentersmaxx is built for the cross-country, multi-currency, multi-property landlord.'); ?>
 
-@section('title', 'About — Rentersmaxx')
-@section('meta_description', 'Rentersmaxx is built for the cross-country, multi-currency, multi-property landlord.')
-
-@php
+<?php
   $page = 'about';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -180,9 +178,9 @@
 </div>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── SCROLL REVEAL ──
@@ -192,4 +190,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/about.blade.php ENDPATH**/ ?>

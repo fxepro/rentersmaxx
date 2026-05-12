@@ -14,7 +14,7 @@
 
 {{-- Shared styles --}}
 @if(app()->environment('local') && !file_exists(public_path('build/manifest.json')))
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
 @else
     @vite(['resources/css/app.css'])
 @endif
@@ -37,7 +37,7 @@
 
 {{-- Shared JS --}}
 @if(app()->environment('local') && !file_exists(public_path('build/manifest.json')))
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}"></script>
 @else
     @vite(['resources/js/app.js'])
 @endif

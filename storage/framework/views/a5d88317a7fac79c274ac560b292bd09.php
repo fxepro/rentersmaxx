@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'How it works — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Three steps. Any country. See exactly how Rentersmaxx collects rent locally and consolidates it into your dashboard.'); ?>
 
-@section('title', 'How it works — Rentersmaxx')
-@section('meta_description', 'Three steps. Any country. See exactly how Rentersmaxx collects rent locally and consolidates it into your dashboard.')
-
-@php
+<?php
   $page = 'how-it-works';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -17,8 +15,8 @@
   <h1>Three steps.<br><em>Any country.</em></h1>
   <p>Complex payment rails, local regulations, and multi-currency accounting — all handled invisibly. You just add a property and collect rent.</p>
   <div class="page-hero-ctas">
-    <a href="{{ url('/waitlist') }}" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
-    <a href="{{ url('/features') }}" class="btn-outline-light">See all features</a>
+    <a href="<?php echo e(url('/waitlist')); ?>" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
+    <a href="<?php echo e(url('/features')); ?>" class="btn-outline-light">See all features</a>
   </div>
 </div>
 
@@ -378,9 +376,9 @@
 </section>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── OVERVIEW ACTIVE STATE ON SCROLL ──
@@ -402,4 +400,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/how-it-works.blade.php ENDPATH**/ ?>

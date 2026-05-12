@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Contact — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Get in touch with the Rentersmaxx team. General enquiries, sales, press, and support.'); ?>
 
-@section('title', 'Contact — Rentersmaxx')
-@section('meta_description', 'Get in touch with the Rentersmaxx team. General enquiries, sales, press, and support.')
-
-@php
+<?php
   $page = 'contact';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -67,7 +65,7 @@
           </div>
           <span class="channel-arrow">→</span>
         </a>
-        <a href="{{ url('/waitlist') }}" class="channel-card">
+        <a href="<?php echo e(url('/waitlist')); ?>" class="channel-card">
           <span class="channel-icon">🚀</span>
           <div class="channel-info">
             <h4>Join the waitlist</h4>
@@ -75,7 +73,7 @@
           </div>
           <span class="channel-arrow">→</span>
         </a>
-        <a href="{{ url('/countries') }}#request" class="channel-card">
+        <a href="<?php echo e(url('/countries')); ?>#request" class="channel-card">
           <span class="channel-icon">🌍</span>
           <div class="channel-info">
             <h4>Request a country</h4>
@@ -120,7 +118,7 @@
           </div>
           <div class="form-group"><label>Message <span class="req">*</span></label><textarea class="form-textarea" placeholder="Tell us what's on your mind…" required></textarea></div>
           <button type="submit" class="form-submit">Send message →</button>
-          <p class="form-legal">We'll respond within 24 hours. By submitting you agree to our <a href="{{ url('/privacy') }}">Privacy Policy</a>.</p>
+          <p class="form-legal">We'll respond within 24 hours. By submitting you agree to our <a href="<?php echo e(url('/privacy')); ?>">Privacy Policy</a>.</p>
         </form>
         <div class="form-success" id="success-general"><div class="fs-icon">✉️</div><h3>Message sent.</h3><p>We'll be in touch within 24 hours — usually sooner.</p></div>
       </div>
@@ -217,11 +215,11 @@
     <div class="faq-grid">
       <div class="faq-card">
         <h4>When is Rentersmaxx launching?</h4>
-        <p>We're targeting a launch in the US, UK, France, and India in 2025. <a href="{{ url('/waitlist') }}">Join the waitlist</a> to be notified the moment your market opens.</p>
+        <p>We're targeting a launch in the US, UK, France, and India in 2025. <a href="<?php echo e(url('/waitlist')); ?>">Join the waitlist</a> to be notified the moment your market opens.</p>
       </div>
       <div class="faq-card">
         <h4>Do you support my country?</h4>
-        <p>We support 60+ countries at launch. Check the <a href="{{ url('/countries') }}">supported countries page</a> — and if yours isn't there, you can request it directly.</p>
+        <p>We support 60+ countries at launch. Check the <a href="<?php echo e(url('/countries')); ?>">supported countries page</a> — and if yours isn't there, you can request it directly.</p>
       </div>
       <div class="faq-card">
         <h4>I'm a property manager — is there an agency plan?</h4>
@@ -233,11 +231,11 @@
       </div>
       <div class="faq-card">
         <h4>How is my data protected?</h4>
-        <p>All data is encrypted in transit and at rest. EU tenant data stays in EU data centres. India tenant data stays in India. Full GDPR compliance. <a href="{{ url('/privacy') }}">Read our privacy policy.</a></p>
+        <p>All data is encrypted in transit and at rest. EU tenant data stays in EU data centres. India tenant data stays in India. Full GDPR compliance. <a href="<?php echo e(url('/privacy')); ?>">Read our privacy policy.</a></p>
       </div>
       <div class="faq-card">
         <h4>I have a property in a country not on your list.</h4>
-        <p>Use the <a href="{{ url('/countries') }}#request">country request form</a> on our supported countries page. We review every request and prioritise by demand.</p>
+        <p>Use the <a href="<?php echo e(url('/countries')); ?>#request">country request form</a> on our supported countries page. We review every request and prioritise by demand.</p>
       </div>
     </div>
   </div>
@@ -248,14 +246,14 @@
   <div style="max-width:1120px;margin:0 auto;text-align:center;">
     <h2>Ready to get started?</h2>
     <p>Join the waitlist and be first when we launch in your country.</p>
-    <a href="{{ url('/waitlist') }}" class="rm-cta-btn">Join the waitlist →</a>
+    <a href="<?php echo e(url('/waitlist')); ?>" class="rm-cta-btn">Join the waitlist →</a>
   </div>
 </div>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── CONTACT TYPE TABS (top) ──
@@ -301,4 +299,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/contact.blade.php ENDPATH**/ ?>

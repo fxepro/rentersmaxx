@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Cookie Policy — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'What cookies Rentersmaxx uses, why, and how to manage your preferences.'); ?>
 
-@section('title', 'Cookie Policy — Rentersmaxx')
-@section('meta_description', 'What cookies Rentersmaxx uses, why, and how to manage your preferences.')
-
-@php
+<?php
   $page = 'cookies';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="legal-page">
   <div class="legal-hero">
     <div class="legal-hero-inner">
@@ -130,7 +128,7 @@
     <div class="legal-section">
       <h2>Changes to this policy</h2>
       <p>We may update this cookie policy when we change the cookies we use. The date at the top of this page reflects the last update. For material changes, we will notify users via the platform or email.</p>
-      <p>Questions about our use of cookies? <a href="{{ url('/contact') }}">Contact us</a> or email <a href="mailto:privacy@rentersmaxx.com">privacy@rentersmaxx.com</a>.</p>
+      <p>Questions about our use of cookies? <a href="<?php echo e(url('/contact')); ?>">Contact us</a> or email <a href="mailto:privacy@rentersmaxx.com">privacy@rentersmaxx.com</a>.</p>
     </div>
 
   </div>
@@ -140,16 +138,16 @@
   <div class="legal-footer-strip-inner">
     <p>© Rentersmaxx 2025</p>
     <div class="legal-footer-links">
-      <a href="{{ url('/privacy') }}">Privacy</a>
-      <a href="{{ url('/terms') }}">Terms</a>
-      <a href="{{ url('/cookies') }}" class="active">Cookies</a>
-      <a href="{{ url('/') }}">← Back to home</a>
+      <a href="<?php echo e(url('/privacy')); ?>">Privacy</a>
+      <a href="<?php echo e(url('/terms')); ?>">Terms</a>
+      <a href="<?php echo e(url('/cookies')); ?>" class="active">Cookies</a>
+      <a href="<?php echo e(url('/')); ?>">← Back to home</a>
     </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 function savePrefs() {
   const saved = document.getElementById('savedMsg');
@@ -157,4 +155,6 @@ function savePrefs() {
   setTimeout(() => { saved.style.display = 'none'; }, 3000);
 }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/cookies.blade.php ENDPATH**/ ?>

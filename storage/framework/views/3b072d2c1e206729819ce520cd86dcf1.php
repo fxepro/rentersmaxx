@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Rentersmaxx — Collect rent anywhere. Get paid everywhere.'); ?>
+<?php $__env->startSection('meta_description', 'One app to manage rental properties across any country. Collect rent locally in EUR, INR, GBP and more.'); ?>
 
-@section('title', 'Rentersmaxx — Collect rent anywhere. Get paid everywhere.')
-@section('meta_description', 'One app to manage rental properties across any country. Collect rent locally in EUR, INR, GBP and more.')
-
-@php
+<?php
   $page = 'home';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-grid"></div>
@@ -17,8 +15,8 @@
   <h1>Collect rent <em>anywhere.</em><br>Get paid everywhere.</h1>
   <p class="hero-sub">One app to manage properties across any country. Your tenants pay locally — in their currency, with their bank. You see everything in yours.</p>
   <div class="hero-ctas">
-    <a href="{{ url('/waitlist') }}" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
-    <a href="{{ url('/how-it-works') }}" class="btn-outline-light">See how it works</a>
+    <a href="<?php echo e(url('/waitlist')); ?>" class="rm-btn rm-btn-primary btn-lg">Join the waitlist</a>
+    <a href="<?php echo e(url('/how-it-works')); ?>" class="btn-outline-light">See how it works</a>
   </div>
   <div class="ticker-wrap">
     <p class="ticker-label">Collecting rent across</p>
@@ -79,7 +77,7 @@
     <div class="reveal">
       <p class="section-label">Simple by design</p>
       <h2 class="section-title" style="color:var(--white)">Three steps. That's it.</h2>
-      <p class="section-sub">Complex regulations and payment rails handled invisibly. <a href="{{ url('/how-it-works') }}" style="color:var(--terra-light);text-decoration:none;font-weight:500;">See the full walkthrough →</a></p>
+      <p class="section-sub">Complex regulations and payment rails handled invisibly. <a href="<?php echo e(url('/how-it-works')); ?>" style="color:var(--terra-light);text-decoration:none;font-weight:500;">See the full walkthrough →</a></p>
     </div>
     <div class="steps reveal">
       <div class="step">
@@ -110,7 +108,7 @@
     <div class="reveal">
       <p class="section-label">For landlords</p>
       <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
-      <p class="section-sub">12 core processes — from lease creation to tax export. <a href="{{ url('/features') }}" style="color:var(--terra);text-decoration:none;font-weight:500;">See all features →</a></p>
+      <p class="section-sub">12 core processes — from lease creation to tax export. <a href="<?php echo e(url('/features')); ?>" style="color:var(--terra);text-decoration:none;font-weight:500;">See all features →</a></p>
     </div>
     <div class="features-layout reveal">
       <div class="feature-tabs" id="featureTabs">
@@ -151,7 +149,7 @@
           <div class="tenant-step"><div class="tenant-step-num">3</div><div class="tenant-step-content"><h4>Raise maintenance &amp; message landlord</h4><p>Photos, status tracking — all in one thread, on-platform.</p></div></div>
           <div class="tenant-step"><div class="tenant-step-num">4</div><div class="tenant-step-content"><h4>Access documents anytime</h4><p>Lease, receipts, rental references — always available.</p></div></div>
         </div>
-        <a href="{{ url('/features') }}#tenant" style="display:inline-flex;align-items:center;gap:6px;margin-top:28px;color:var(--terra);text-decoration:none;font-size:21px;font-weight:500;">Full tenant experience →</a>
+        <a href="<?php echo e(url('/features')); ?>#tenant" style="display:inline-flex;align-items:center;gap:6px;margin-top:28px;color:var(--terra);text-decoration:none;font-size:21px;font-weight:500;">Full tenant experience →</a>
       </div>
       <div>
         <div class="mock-app">
@@ -172,7 +170,7 @@
     <div class="reveal">
       <p class="section-label">Supported markets</p>
       <h2 class="section-title">60+ countries.<br>One integration.</h2>
-      <p class="section-sub">Each country uses the right local payment rail automatically. <a href="{{ url('/countries') }}" style="color:var(--terra);text-decoration:none;font-weight:500;">See all supported markets →</a></p>
+      <p class="section-sub">Each country uses the right local payment rail automatically. <a href="<?php echo e(url('/countries')); ?>" style="color:var(--terra);text-decoration:none;font-weight:500;">See all supported markets →</a></p>
     </div>
     <div class="country-grid reveal">
       <div class="country-card"><p class="country-region">North America</p><div class="country-flags">🇺🇸 🇨🇦</div><h4>US &amp; Canada</h4><p>United States, Canada</p><span class="country-method">ACH · EFT</span></div>
@@ -182,7 +180,7 @@
       <div class="country-card"><p class="country-region">Africa</p><div class="country-flags">🇳🇬 🇰🇪 🇬🇭 🇿🇦</div><h4>Africa</h4><p>Nigeria, Kenya, Ghana, South Africa + 30 more</p><span class="country-method">Mobile money · Bank</span></div>
       <div class="country-card"><p class="country-region">Latin America</p><div class="country-flags">🇧🇷 🇲🇽 🇦🇷 🇨🇴</div><h4>LatAm</h4><p>Brazil, Mexico, Argentina, Colombia, Chile</p><span class="country-method">Pix · SPEI · PSE</span></div>
       <div class="country-card"><p class="country-region">Pacific</p><div class="country-flags">🇦🇺 🇳🇿 🇸🇬</div><h4>Pacific &amp; Singapore</h4><p>Australia, New Zealand, Singapore, Hong Kong</p><span class="country-method">BECS · PayNow</span></div>
-      <div class="country-card" style="background:var(--cream);border:2px dashed var(--cream-dark);"><p class="country-region">Coming soon</p><div class="country-flags">🌍</div><h4>More markets</h4><p>Middle East, Eastern Europe on the roadmap</p><span class="country-method"><a href="{{ url('/countries') }}" style="color:var(--terra);text-decoration:none;">Request your country →</a></span></div>
+      <div class="country-card" style="background:var(--cream);border:2px dashed var(--cream-dark);"><p class="country-region">Coming soon</p><div class="country-flags">🌍</div><h4>More markets</h4><p>Middle East, Eastern Europe on the roadmap</p><span class="country-method"><a href="<?php echo e(url('/countries')); ?>" style="color:var(--terra);text-decoration:none;">Request your country →</a></span></div>
     </div>
   </div>
 </section>
@@ -193,12 +191,12 @@
     <div class="reveal">
       <p class="section-label">Transparent pricing</p>
       <h2 class="section-title" style="color:var(--white)">Start free. Scale simply.</h2>
-      <p class="section-sub">First property free for one month. Pay per unit from the second. <a href="{{ url('/pricing') }}" style="color:var(--terra-light);text-decoration:none;font-weight:500;">See full pricing →</a></p>
+      <p class="section-sub">First property free for one month. Pay per unit from the second. <a href="<?php echo e(url('/pricing')); ?>" style="color:var(--terra-light);text-decoration:none;font-weight:500;">See full pricing →</a></p>
     </div>
     <div class="pricing-grid reveal">
-      <div class="price-card"><p class="price-tag">Starter</p><div class="price-amount"><span class="price-currency">$</span><span class="price-number">0</span><span class="price-period">/ month</span></div><p class="price-desc">For landlords with a single property. Full features, no payment required.</p><ul class="price-feats"><li>1 property</li><li>Automated rent collection</li><li>Tenant messaging</li><li>Maintenance requests</li><li>Document storage</li><li>Annual tax export</li></ul><a href="{{ url('/waitlist') }}" class="price-btn">Join waitlist</a></div>
-      <div class="price-card featured"><p class="price-tag">Per unit</p><div class="price-amount"><span class="price-currency">$</span><span class="price-number">9</span><span class="price-period">/ unit / mo</span></div><p class="price-desc">For landlords with multiple properties across any number of countries.</p><ul class="price-feats"><li>Unlimited properties</li><li>All 60+ countries</li><li>Full financial dashboard</li><li>Multi-currency ledger</li><li>Portfolio analytics</li><li>Priority support</li></ul><a href="{{ url('/waitlist') }}" class="price-btn">Start free trial</a></div>
-      <div class="price-card"><p class="price-tag">Agency</p><div class="price-amount" style="align-items:center;padding-top:6px;"><span class="price-number" style="font-size:38px;line-height:1.15;">Talk<br>to us</span></div><p class="price-desc">For property managers handling portfolios on behalf of multiple owners.</p><ul class="price-feats"><li>Sub-accounts per owner</li><li>Bulk lease management</li><li>White-label option</li><li>Dedicated account manager</li><li>Custom onboarding</li><li>SLA guarantee</li></ul><a href="{{ url('/contact') }}" class="price-btn">Contact sales</a></div>
+      <div class="price-card"><p class="price-tag">Starter</p><div class="price-amount"><span class="price-currency">$</span><span class="price-number">0</span><span class="price-period">/ month</span></div><p class="price-desc">For landlords with a single property. Full features, no payment required.</p><ul class="price-feats"><li>1 property</li><li>Automated rent collection</li><li>Tenant messaging</li><li>Maintenance requests</li><li>Document storage</li><li>Annual tax export</li></ul><a href="<?php echo e(url('/waitlist')); ?>" class="price-btn">Join waitlist</a></div>
+      <div class="price-card featured"><p class="price-tag">Per unit</p><div class="price-amount"><span class="price-currency">$</span><span class="price-number">9</span><span class="price-period">/ unit / mo</span></div><p class="price-desc">For landlords with multiple properties across any number of countries.</p><ul class="price-feats"><li>Unlimited properties</li><li>All 60+ countries</li><li>Full financial dashboard</li><li>Multi-currency ledger</li><li>Portfolio analytics</li><li>Priority support</li></ul><a href="<?php echo e(url('/waitlist')); ?>" class="price-btn">Start free trial</a></div>
+      <div class="price-card"><p class="price-tag">Agency</p><div class="price-amount" style="align-items:center;padding-top:6px;"><span class="price-number" style="font-size:38px;line-height:1.15;">Talk<br>to us</span></div><p class="price-desc">For property managers handling portfolios on behalf of multiple owners.</p><ul class="price-feats"><li>Sub-accounts per owner</li><li>Bulk lease management</li><li>White-label option</li><li>Dedicated account manager</li><li>Custom onboarding</li><li>SLA guarantee</li></ul><a href="<?php echo e(url('/contact')); ?>" class="price-btn">Contact sales</a></div>
     </div>
     <p style="text-align:center;margin-top:22px;font-size:19px;color:rgba(255,255,255,0.28);">Processor fees passed through at cost and shown before every collection. No markup.</p>
   </div>
@@ -244,9 +242,9 @@
 </section>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 // ── FEATURE TABS ──
 document.querySelectorAll('.feature-tab').forEach((tab, i) => {
@@ -275,4 +273,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/index.blade.php ENDPATH**/ ?>

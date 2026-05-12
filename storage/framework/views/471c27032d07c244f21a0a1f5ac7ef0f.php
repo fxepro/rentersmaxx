@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Supported Countries — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Rentersmaxx supports rent collection in 60+ countries. Local payment methods — SEPA, UPI, BACS, ACH and more.'); ?>
 
-@section('title', 'Supported Countries — Rentersmaxx')
-@section('meta_description', 'Rentersmaxx supports rent collection in 60+ countries. Local payment methods — SEPA, UPI, BACS, ACH and more.')
-
-@php
+<?php
   $page = 'countries';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ PAGE HERO ══ -->
 <div class="page-hero">
   <div class="page-hero-grid"></div>
@@ -168,7 +166,7 @@
       </div>
       <div style="margin-top:16px; padding:16px 20px; background:var(--terra-pale); border-radius:var(--radius); border:1px solid rgba(196,98,45,0.2);">
         <p style="font-size:23px; color:var(--terra); font-weight:500; margin-bottom:4px;">India requires special handling</p>
-        <p style="font-size:19px; color:var(--text-mid); font-weight:300; line-height:1.6;">Rent must flow through an NRO account. Repatriation to your home country requires Form 15CA/15CB filed by a CA. Rentersmaxx collects rent locally in INR — repatriation to your home country is your responsibility. <a href="{{ url('/how-it-works') }}" style="color:var(--terra); font-weight:500;">Learn more →</a></p>
+        <p style="font-size:19px; color:var(--text-mid); font-weight:300; line-height:1.6;">Rent must flow through an NRO account. Repatriation to your home country requires Form 15CA/15CB filed by a CA. Rentersmaxx collects rent locally in INR — repatriation to your home country is your responsibility. <a href="<?php echo e(url('/how-it-works')); ?>" style="color:var(--terra); font-weight:500;">Learn more →</a></p>
       </div>
     </div>
 
@@ -387,9 +385,9 @@
 </section>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── REGION FILTER ──
@@ -461,4 +459,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/countries.blade.php ENDPATH**/ ?>

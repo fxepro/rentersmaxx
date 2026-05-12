@@ -1,14 +1,12 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Join the Waitlist — Rentersmaxx'); ?>
+<?php $__env->startSection('meta_description', 'Be first when Rentersmaxx launches in your country. Join the waitlist for the international landlord platform.'); ?>
 
-@section('title', 'Join the Waitlist — Rentersmaxx')
-@section('meta_description', 'Be first when Rentersmaxx launches in your country. Join the waitlist for the international landlord platform.')
-
-@php
+<?php
   $page = 'waitlist';
   $hideFooter = false;
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- ══ MAIN ══ -->
 <div class="waitlist-page">
 
@@ -148,7 +146,7 @@
 
         <button type="submit" class="form-submit" id="wlSubmit">Join the waitlist →</button>
 
-        <p class="form-legal">By joining you agree to our <a href="{{ url('/privacy') }}">Privacy Policy</a> and <a href="{{ url('/terms') }}">Terms of Service</a>. We will never share your information or send you spam.</p>
+        <p class="form-legal">By joining you agree to our <a href="<?php echo e(url('/privacy')); ?>">Privacy Policy</a> and <a href="<?php echo e(url('/terms')); ?>">Terms of Service</a>. We will never share your information or send you spam.</p>
 
       </form>
     </div>
@@ -160,8 +158,8 @@
       <p>We'll reach out as soon as Rentersmaxx launches in your market — with your first month free and early access to the founding team.</p>
       <div class="ref-num" id="wlRef">REF-000000</div>
       <div class="success-links">
-        <a href="{{ url('/') }}" class="success-link">← Back to home</a>
-        <a href="{{ url('/how-it-works') }}" class="success-link primary">See how it works →</a>
+        <a href="<?php echo e(url('/')); ?>" class="success-link">← Back to home</a>
+        <a href="<?php echo e(url('/how-it-works')); ?>" class="success-link primary">See how it works →</a>
       </div>
     </div>
 
@@ -186,9 +184,9 @@
 </div>
 
 <!-- ══ FOOTER ══ -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 
 // ── WAITLIST FORM ──
@@ -218,4 +216,6 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/pages/waitlist.blade.php ENDPATH**/ ?>
