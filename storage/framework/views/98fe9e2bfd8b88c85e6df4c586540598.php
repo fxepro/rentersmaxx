@@ -1,6 +1,6 @@
-@extends('dashboard.layout')
-@section('page-title', 'Properties')
-@section('topbar-actions')
+
+<?php $__env->startSection('page-title', 'Properties'); ?>
+<?php $__env->startSection('topbar-actions'); ?>
   <div style="display:flex;align-items:center;gap:8px">
     <div style="display:flex;background:var(--cream-dark);border-radius:8px;padding:3px;gap:2px" id="viewToggle">
       <button onclick="setView('card')" id="btnCard" class="view-btn active" title="Card view">
@@ -10,11 +10,11 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="2.5" rx="1" fill="currentColor"/><rect x="1" y="6.5" width="14" height="2.5" rx="1" fill="currentColor" opacity=".5"/><rect x="1" y="11" width="14" height="2.5" rx="1" fill="currentColor" opacity=".5"/></svg>
       </button>
     </div>
-    <a href="{{ route('properties.create') }}" class="db-btn db-btn-primary">+ Add property</a>
+    <a href="<?php echo e(route('properties.create')); ?>" class="db-btn db-btn-primary">+ Add property</a>
   </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <style>
 .view-btn { display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:6px;border:none;background:transparent;color:var(--text-light);cursor:pointer;transition:all 0.15s; }
 .view-btn.active { background:var(--white);color:var(--text-dark);box-shadow:0 1px 3px rgba(0,0,0,0.1); }
@@ -42,59 +42,59 @@
 @media (max-width:1200px) { #cardView { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:800px) { #cardView { grid-template-columns:1fr; } }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@if($properties->isEmpty())
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($properties->isEmpty()): ?>
   <div class="db-empty" style="min-height:60vh">
     <div class="db-empty-icon">🏠</div>
     <h3>No properties yet.</h3>
     <p>Add your first property to start collecting rent.</p>
-    <a href="{{ route('properties.create') }}" class="db-btn db-btn-primary">+ Add property</a>
+    <a href="<?php echo e(route('properties.create')); ?>" class="db-btn db-btn-primary">+ Add property</a>
   </div>
-@else
+<?php else: ?>
 
-  {{-- ── CARD VIEW ── --}}
+  
   <div id="cardView">
-    @foreach($properties as $p)
-    @php
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $properties; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php
       $lease   = $p->leases->where('status','active')->first();
       $country = config('countries.'.$p->country_code, []);
       $flags   = ['FR'=>'🇫🇷','GB'=>'🇬🇧','US'=>'🇺🇸','IN'=>'🇮🇳','DE'=>'🇩🇪','AU'=>'🇦🇺','CA'=>'🇨🇦','NG'=>'🇳🇬','ID'=>'🇮🇩','PH'=>'🇵🇭','BR'=>'🇧🇷','MX'=>'🇲🇽','ZA'=>'🇿🇦','KE'=>'🇰🇪','SG'=>'🇸🇬','JP'=>'🇯🇵','ES'=>'🇪🇸','IT'=>'🇮🇹','NL'=>'🇳🇱','PT'=>'🇵🇹','BE'=>'🇧🇪','SE'=>'🇸🇪','NO'=>'🇳🇴','DK'=>'🇩🇰','PL'=>'🇵🇱','CH'=>'🇨🇭','MY'=>'🇲🇾','TH'=>'🇹🇭','VN'=>'🇻🇳'];
       $flag    = $flags[$p->country_code] ?? "🏠";
-    @endphp
-    <a href="{{ route('properties.show',$p) }}" class="prop-card">
+    ?>
+    <a href="<?php echo e(route('properties.show',$p)); ?>" class="prop-card">
       <div class="prop-card-top">
-        <span class="prop-card-flag">{{ $flag }}</span>
-        <span class="badge {{ $lease ? 'badge-green' : 'badge-grey' }}">{{ $lease ? 'Tenanted' : 'Vacant' }}</span>
+        <span class="prop-card-flag"><?php echo e($flag); ?></span>
+        <span class="badge <?php echo e($lease ? 'badge-green' : 'badge-grey'); ?>"><?php echo e($lease ? 'Tenanted' : 'Vacant'); ?></span>
       </div>
-      <div class="prop-card-name">{{ $p->name }}</div>
-      <div class="prop-card-addr">{{ $p->city }}, {{ $p->country_code }}</div>
+      <div class="prop-card-name"><?php echo e($p->name); ?></div>
+      <div class="prop-card-addr"><?php echo e($p->city); ?>, <?php echo e($p->country_code); ?></div>
       <div class="prop-card-divider"></div>
-      @if($lease)
-        <div class="prop-card-rent">{{ number_format($lease->rent_minor_units/100,0) }} <span style="font-size:15px;color:var(--text-light)">{{ $lease->currency_code }}</span></div>
+      <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($lease): ?>
+        <div class="prop-card-rent"><?php echo e(number_format($lease->rent_minor_units/100,0)); ?> <span style="font-size:15px;color:var(--text-light)"><?php echo e($lease->currency_code); ?></span></div>
         <div class="prop-card-meta">
-          @php $day=$lease->due_day; $sfx=$day===1?'st':($day===2?'nd':($day===3?'rd':'th')); @endphp
-          <span>Due {{ $day }}{{ $sfx }}</span>
+          <?php $day=$lease->due_day; $sfx=$day===1?'st':($day===2?'nd':($day===3?'rd':'th')); ?>
+          <span>Due <?php echo e($day); ?><?php echo e($sfx); ?></span>
           <span>·</span>
-          <span>{{ $lease->tenant->first_name ?? '—' }} {{ $lease->tenant->last_name ?? '' }}</span>
+          <span><?php echo e($lease->tenant->first_name ?? '—'); ?> <?php echo e($lease->tenant->last_name ?? ''); ?></span>
         </div>
-      @else
+      <?php else: ?>
         <div class="prop-card-rent" style="font-size:16px;color:var(--text-light)">No active lease</div>
         <div class="prop-card-meta">Add a tenant →</div>
-      @endif
+      <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
       <div class="prop-card-footer">
         <div class="prop-card-method">
-          <span>{{ $country['method'] ?? '—' }}</span>
+          <span><?php echo e($country['method'] ?? '—'); ?></span>
         </div>
-        <span style="font-size:12px;color:var(--text-light)">{{ ucfirst($p->type) }}@if($p->bedrooms) · {{ $p->bedrooms }}bd @endif</span>
+        <span style="font-size:12px;color:var(--text-light)"><?php echo e(ucfirst($p->type)); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($p->bedrooms): ?> · <?php echo e($p->bedrooms); ?>bd <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?></span>
       </div>
     </a>
-    @endforeach
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
   </div>
 
-  {{-- ── TABLE VIEW ── --}}
+  
   <div id="tableView">
     <div class="db-card">
       <div class="db-table-wrap">
@@ -112,52 +112,52 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($properties as $p)
-            @php
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $properties; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
               $lease   = $p->leases->where('status','active')->first();
               $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","DE"=>"🇩🇪","AU"=>"🇦🇺","CA"=>"🇨🇦","NG"=>"🇳🇬","ID"=>"🇮🇩","PH"=>"🇵🇭","BR"=>"🇧🇷","MX"=>"🇲🇽","ZA"=>"🇿🇦","KE"=>"🇰🇪","SG"=>"🇸🇬","JP"=>"🇯🇵","ES"=>"🇪🇸","IT"=>"🇮🇹","NL"=>"🇳🇱","PT"=>"🇵🇹","BE"=>"🇧🇪","SE"=>"🇸🇪","NO"=>"🇳🇴","DK"=>"🇩🇰","PL"=>"🇵🇱","CH"=>"🇨🇭","MY"=>"🇲🇾","TH"=>"🇹🇭","VN"=>"🇻🇳"];
               $flag    = $flags[$p->country_code] ?? "🏠";
               $country = config("countries.".$p->country_code,[]);
-            @endphp
+            ?>
             <tr>
               <td>
                 <div style="display:flex;align-items:center;gap:10px">
-                  <span style="font-size:20px">{{ $flag }}</span>
+                  <span style="font-size:20px"><?php echo e($flag); ?></span>
                   <div>
-                    <div style="font-weight:600;color:var(--text-dark)">{{ $p->name }}</div>
-                    <div style="font-size:12px;color:var(--text-light)">{{ $p->city }}</div>
+                    <div style="font-weight:600;color:var(--text-dark)"><?php echo e($p->name); ?></div>
+                    <div style="font-size:12px;color:var(--text-light)"><?php echo e($p->city); ?></div>
                   </div>
                 </div>
               </td>
-              <td>{{ $p->country_code }}</td>
+              <td><?php echo e($p->country_code); ?></td>
               <td>
-                @if($lease)
-                  <strong>{{ $lease->tenant->first_name }} {{ $lease->tenant->last_name }}</strong>
-                @else
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($lease): ?>
+                  <strong><?php echo e($lease->tenant->first_name); ?> <?php echo e($lease->tenant->last_name); ?></strong>
+                <?php else: ?>
                   <span style="color:var(--text-light)">—</span>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
               </td>
               <td>
-                @if($lease)
-                  <strong>{{ number_format($lease->rent_minor_units/100,0) }} {{ $lease->currency_code }}</strong>
-                @else —@endif
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($lease): ?>
+                  <strong><?php echo e(number_format($lease->rent_minor_units/100,0)); ?> <?php echo e($lease->currency_code); ?></strong>
+                <?php else: ?> —<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
               </td>
-              <td>{{ $country['method'] ?? '—' }}</td>
-              <td>@if($lease){{ $lease->due_day }}th @else —@endif</td>
-              <td><span class="badge {{ $lease ? 'badge-green' : 'badge-grey' }}">{{ $lease ? 'Tenanted' : 'Vacant' }}</span></td>
-              <td><a href="{{ route('properties.show',$p) }}" class="db-btn db-btn-ghost" style="font-size:13px;padding:6px 12px">View →</a></td>
+              <td><?php echo e($country['method'] ?? '—'); ?></td>
+              <td><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($lease): ?><?php echo e($lease->due_day); ?>th <?php else: ?> —<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?></td>
+              <td><span class="badge <?php echo e($lease ? 'badge-green' : 'badge-grey'); ?>"><?php echo e($lease ? 'Tenanted' : 'Vacant'); ?></span></td>
+              <td><a href="<?php echo e(route('properties.show',$p)); ?>" class="db-btn db-btn-ghost" style="font-size:13px;padding:6px 12px">View →</a></td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-@endif
-@endsection
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 function setView(v) {
   document.getElementById('cardView').style.display  = v==='card'  ? 'grid' : 'none';
@@ -170,4 +170,6 @@ function setView(v) {
 const saved = localStorage.getItem('propView');
 if (saved) setView(saved);
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('dashboard.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\fxepro\AIProjects\RentersMaxx\resources\views/dashboard/properties/index.blade.php ENDPATH**/ ?>

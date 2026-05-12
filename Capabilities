@@ -1,0 +1,99 @@
+1- Account setup & identity
+    • Register with email or Google/Apple SSO
+    • Select home country (US) and verify phone number
+    • Complete identity verification (KYC lite — name, address, government ID photo)
+    • Set preferred payout currency (USD) and connect US bank account via Plaid
+    • Accept platform terms including tax responsibility disclaimer
+
+2- Add a property
+    • Select property country from supported list — app auto-assigns local payment processor
+    • Enter property address using country-localised address fields (postcode format, state/province etc.)
+    • Set property type (apartment, house, commercial), size, and bedrooms
+    • Upload property photos (optional — for tenant-facing listing if using app discovery)
+    • Confirm local currency for that property — locked to country (EUR for France, INR for India etc.)
+    • Repeat for each property — unlimited properties, billing per unit from unit 2 onwards
+
+3- Create a lease
+Create a lease
+    • Enter tenant details: name, email, phone (localised format)
+    • Set lease start date, end date, and rent amount in local currency
+    • Set rent due day (e.g. 1st of month) and grace period (e.g. 5 days)
+    • Select payment frequency: monthly, fortnightly, weekly
+    • Add security deposit amount and confirm it is held externally (app does not hold deposits)
+    • Upload signed lease document PDF for record-keeping — stored against the lease
+    • Send lease summary to tenant via email with payment setup instructions
+
+4- Tenant onboarding & mandate
+Tenant onboarding & mandate
+    • Tenant receives email invite with localised payment setup link
+    • Tenant completes local payment mandate (SEPA direct debit for EU, UPI autopay or NACH for India etc.)
+    • Landlord receives confirmation that mandate is active
+    • Landlord marks lease as 'active' — automated rent collection begins on first due date
+
+5- Rent collection (automated)
+Rent collection (automated)
+    • App initiates local payment collection on due date via country processor
+    • Landlord receives push notification and email: payment collected or failed
+    • On success: rent logged in ledger with timestamp, amount, and FX rate snapshot
+    • On failure: automated retry after 3 days; landlord notified of arrears after 2nd failure
+    • Payment settles to landlord's in-country holding balance (not auto-transferred abroad)
+    • Landlord can view running balance per property and per country at any time
+
+6- Arrears & late payment management
+Arrears & late payment management
+    • App auto-sends localised late payment reminder to tenant on day 1 of arrears
+    • Escalating reminder cadence: day 1, day 5, day 10 — tone escalates automatically
+    • Landlord can manually send custom message to tenant from within the app
+    • Landlord can log a manual payment (e.g. cash or bank transfer received outside app)
+    • Landlord can mark debt as waived or disputed with a note
+    • Outstanding arrears shown prominently on dashboard with days overdue
+
+7- Maintenance requests
+Maintenance requests
+    • Tenant raises maintenance request via app with description and photos
+    • Landlord receives notification and can accept, decline, or request more info
+    • Landlord logs resolution notes and marks request closed
+    • Full maintenance history stored per property — useful for deposit disputes
+    • Landlord can attach contractor invoice or receipt to a closed request
+
+8- Document management
+Document management
+    • Upload and store: lease agreements, inspection reports, insurance certificates, compliance docs
+    • Documents organised by property and tagged by type
+    • Share individual documents with tenant via secure link (time-limited download)
+    • Receive tenant-uploaded documents (signed forms, ID copies, employer letters)
+    • All documents retained for minimum 7 years per GDPR / local data law requirements
+
+9- Financial dashboard & reporting
+Financial dashboard & reporting
+    • Unified dashboard showing all properties, all currencies, all balances
+    • Monthly income summary per property in local currency and USD equivalent
+    • FX rate logged at each payment — historical FX record for tax purposes
+    • Annual income report per property — exportable as CSV and PDF for CPA
+    • Outstanding balance tracker: what has been repatriated vs still in-country
+    • Landlord manually logs repatriation events (amount, date, exchange rate used) for record
+
+10- Lease renewal & end-of-tenancy
+Lease renewal & end-of-tenancy
+    • App alerts landlord 90, 60, and 30 days before lease expiry
+    • Landlord can extend lease with new end date and optionally updated rent amount
+    • Tenant notified of renewal terms — can accept or flag intention to vacate
+    • At end of tenancy: landlord marks lease closed, final rent reconciled
+    • Security deposit decision logged (returned, partially retained, disputed) — note only, app does not handle deposit money
+    • Tenant access to app revoked 7 days after lease end — read-only payment history remains
+
+11- Multi-property & portfolio view
+Multi-property & portfolio view
+    • All properties visible on single dashboard regardless of country or currency
+    • Filter by country, currency, status (active, expiring, vacant, in arrears)
+    • Aggregate totals shown in USD using last-known FX rates with refresh timestamp
+    • Occupancy rate shown across portfolio
+    • Net income trend chart by month across all properties combined
+
+12- Notifications & communication   
+Notifications & communication
+    • Push, email, and in-app notifications for: payment received, payment failed, maintenance raised, lease expiring
+    • In-app message thread per property — full conversation history with tenant
+    • Broadcast message to all tenants in a property (for building-wide notices)
+    • Landlord can set quiet hours — no notifications outside defined hours in their timezone
+    • All communication timestamped and stored — admissible as correspondence record
