@@ -192,6 +192,8 @@ $flags = ["FR"=>"🇫🇷","GB"=>"🇬🇧","US"=>"🇺🇸","IN"=>"🇮🇳","D
 
 {{-- Property data for JS --}}
 <script>
+const CSRF = CSRF;
+
 const PROPS = {
   @foreach($properties as $p)
   @php
@@ -405,7 +407,7 @@ function showAddAppForm(pid) {
 
 async function submitApp(pid) {
   const data = new FormData();
-  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('_token', CSRF);
   data.append('first_name', document.getElementById('appFirst').value);
   data.append('last_name',  document.getElementById('appLast').value);
   data.append('email',      document.getElementById('appEmail').value);
@@ -420,7 +422,7 @@ async function submitApp(pid) {
 
 async function updateAppStatus(url, status, btn) {
   const data = new FormData();
-  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('_token', CSRF);
   data.append('_method', 'PATCH');
   data.append('status', status);
   const res = await fetch(url, { method:'POST', body:data });
@@ -500,7 +502,7 @@ async function submitCheck() {
   const sel = document.getElementById('chkApp');
   const url = sel.options[sel.selectedIndex].dataset.url;
   const data = new FormData();
-  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('_token', CSRF);
   data.append('type',   document.getElementById('chkType').value);
   data.append('method', document.getElementById('chkMethod').value);
   data.append('notes',  document.getElementById('chkNotes').value);
@@ -603,7 +605,7 @@ function showNewForm() {
   const countryOpts = COUNTRIES.map(c=>`<option value="${c.code}">${c.label}</option>`).join('');
   document.getElementById('panelBody').innerHTML = `
     <form id="newForm" class="panel-form" method="POST" action="{{ route('properties.store') }}">
-      @csrf
+      <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <div class="panel-form-row">
         <div class="db-form-group">
           <label style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:5px;display:block">Property name <span style="color:var(--terra)">*</span></label>
@@ -650,7 +652,7 @@ async function saveProperty(id) {
   const form = document.getElementById('editForm');
   const data = new FormData(form);
   data.append('_method', 'PUT');
-  data.append('_token', document.querySelector('meta[name=csrf-token]').content);
+  data.append('_token', CSRF);
   const msg = document.getElementById('editMsg');
   try {
     const res = await fetch(PROPS[id].editUrl, { method:'POST', body: data });
@@ -677,7 +679,7 @@ function deleteProperty(id) {
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = PROPS[id].deleteUrl;
-  form.innerHTML = `<input name="_token" value="${document.querySelector('meta[name=csrf-token]').content}"><input name="_method" value="DELETE">`;
+  form.innerHTML = `<input name="_token" value="${CSRF}"><input name="_method" value="DELETE">`;
   document.body.appendChild(form);
   form.submit();
 }
