@@ -235,7 +235,7 @@ const COUNTRIES = @json(array_map(fn($k,$v)=>['code'=>$k,'label'=>$k.' — '.$v[
 const APPS = {
   @foreach($properties as $p)
   "{{ $p->id }}": [
-    @foreach($p->applications->sortByDesc('created_at') as $app)
+    @foreach($p->relationLoaded('applications') ? $p->applications->sortByDesc('created_at') : collect() as $app)
     {
       id:      "{{ $app->id }}",
       name:    @json($app->first_name.' '.$app->last_name),
@@ -247,7 +247,7 @@ const APPS = {
       status:  "{{ $app->status }}",
       notes:   @json($app->landlord_notes ?? ''),
       checks:  [
-        @foreach($app->backgroundChecks as $chk)
+        @foreach($app->relationLoaded('backgroundChecks') ? $app->backgroundChecks : collect() as $chk)
         { id:"{{ $chk->id }}", type:"{{ $chk->type }}", method:"{{ $chk->method }}", status:"{{ $chk->status }}", notes:@json($chk->notes??''), completed:"{{ $chk->completed_at?->format('d M Y')??'—' }}" },
         @endforeach
       ],
